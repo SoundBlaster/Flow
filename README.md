@@ -1,19 +1,20 @@
 # Flow
+
 Agentic Workflow
 
-> **Flow** is a text prompt-based agentic workflow for the open source contribution.
+> **Flow** is a text prompt-based agentic workflow for open source contribution.
 
 ## Ideology
 
-Method is the linear _flow_, the step-by-step execution of commands.
+Method is the linear _flow_ — the step-by-step execution of commands.
 
 Each command is just a prompt.
 
-**Flow** mimiks to a real process in any software company.
+**Flow** mimics a real-world software development process.
 
 ## Structure
 
-**Flow** contains basic commands, `Markdown` files:
+**Flow** consists of basic commands defined as Markdown files:
 
 1. SELECT
 2. BRANCH
@@ -26,17 +27,16 @@ Each command is just a prompt.
 9. PR
 10. CI-REVIEW
 
-This chain of commands is grouped in the FLOW workflow-command. This command is a start point of journey for each task.
+These commands are grouped under the **FLOW** meta-command, which serves as the entry point for every task.
 
 ## Source of Truth
 
-The file `Workflow.md` is the only one **Source of Truth** for the project tasks. 
+`SPECS/Workflow.md` is the single source of truth for all project tasks.
 
 ## Current State
 
-Files for the current task are temproraly placed in the `INPROGRESS` folder.
-In this folder the `next.md` file is logging currently selected and executed task and also contains the list of potential next tasks and previously done.
+Files for the current task are temporarily placed in the `INPROGRESS/` folder. The `next.md` file logs the currently selected and executed task, along with lists of potential next tasks and previously completed ones.
 
 ## Skills
 
-This workflow is improved by agent skills. These skills just wrap prompts in shortcuts for CLI agents. These skills are optional.
+This workflow is enhanced by agent skills. These skills wrap prompts into CLI shortcuts. Skills are optional.
