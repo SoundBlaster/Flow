@@ -10,7 +10,7 @@ Apply a structured code review to any set of commits or staged changes. This com
 
 - Current git branch (commits since `main`/`origin/main`) or any explicit commit range
 - Related PRD or workplan for context (from `SPECS/INPROGRESS` or `SPECS/Workplan.md`)
-- `@SPECS/TEMPLATES/NFRs.md` — performance budgets and constraints (optional)
+- [Params](.flow/params.yaml) — performance budgets under `nfrs.*` (optional)
 
 ## Algorithm
 
@@ -27,7 +27,7 @@ Apply a structured code review to any set of commits or staged changes. This com
    - Correctness & logic
    - Architecture & design
    - Maintainability & readability
-   - Performance & resource usage (refer to `@SPECS/TEMPLATES/NFRs.md`)
+   - Performance & resource usage (refer to `nfrs.*` in [Params](.flow/params.yaml))
    - Security & safety
    - Concurrency/state (if applicable)
 
@@ -77,11 +77,9 @@ Apply a structured code review to any set of commits or staged changes. This com
 
 ## Performance & NFRs
 
-Check against constraints defined in:
+Check against constraints defined in [Params](.flow/params.yaml) under `nfrs.*`.
 
-@SPECS/TEMPLATES/NFRs.md
-
-If templates are not configured, use these defaults:
+If params are not configured, use these defaults:
 - Response time: <200ms for API calls
 - Memory: <512MB per process
 - Test coverage: ≥80%

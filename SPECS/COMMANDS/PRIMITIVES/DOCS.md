@@ -57,7 +57,7 @@ fn process_data(input_data: &str) -> Result<Data, Error> { ... }
 ### Project Documentation
 
 - Update `README.md` for user-facing changes
-- Update `AGENTS.md` for agent-specific context
+- Update `AGENTS.md` for agent-specific context (if used)
 - Update `SPECS/` documentation for design decisions
 
 ### Configuration Documentation
@@ -70,5 +70,5 @@ fn process_data(input_data: &str) -> Result<Data, Error> { ... }
 
 - [ ] Code documentation added/updated for modified functions
 - [ ] README updated if behavior changes
-- [ ] AGENTS.md updated if agent workflow changes
+- [ ] `AGENTS.md` updated if present and agent workflow changes
 - [ ] Configuration examples remain valid

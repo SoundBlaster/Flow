@@ -1,6 +1,7 @@
-# Project Workplan Template
+# Project Workplan — Example
 
-Copy this file to your project's `SPECS/` folder and customize for your roadmap.
+Replace this file with your own tasks. Installed to `SPECS/Workplan.md` by `install.sh`.
+Delete the example phases below and add your own.
 
 ---
 

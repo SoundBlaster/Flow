@@ -19,12 +19,8 @@ Scan for completed tasks and archive them from `SPECS/INPROGRESS/` to `SPECS/ARC
    - Confirm all deliverables are addressed
 
 2. **For each completed task:**
-   - **MUST run pre-move primitive first** to create a canonical archive folder:
+   - **MUST create the archive folder first:**
      ```bash
-     # If you have an archive helper script:
-     scripts/archive_primitive.sh prepare-task "${TASK_ID}" "${TASK_NAME}"
-     
-     # Or create manually:
      mkdir -p "SPECS/ARCHIVE/${TASK_ID}_${TASK_NAME}"
      ```
    - Execute [`ARCHIVE_TASK`](PRIMITIVES/ARCHIVE_TASK.md) primitive with:

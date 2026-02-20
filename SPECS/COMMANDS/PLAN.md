@@ -10,7 +10,7 @@ PLAN turns the selected task into a self-contained, implementation-ready PRD ins
 
 - `SPECS/INPROGRESS/next.md` — current task metadata chosen by SELECT.
 - `SPECS/Workplan.md` for workplan context (phase, references, dependencies).
-- `SPECS/CONFIG.md` (optional) — project-specific conventions and constraints.
+- [Params](.flow/params.yaml) — project-specific conventions and constraints.
 
 ## Process
 
@@ -34,7 +34,7 @@ PLAN turns the selected task into a self-contained, implementation-ready PRD ins
 
 - Do not mix multiple tasks inside a single PRD; split them into separate files when you have multiple independent deliverables.
 - When the PRD is complete, feed it to EXECUTE, which will display it before you start coding.
-- Adapt language-specific patterns based on your project's tech stack (defined in `SPECS/CONFIG.md`).
+- Adapt language-specific patterns based on your project's tech stack (defined in [Params](.flow/params.yaml)).
 
 ## Role References (Optional)
 

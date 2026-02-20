@@ -10,7 +10,7 @@ Choose the next task from the workplan without re-planning. SELECT keeps the "cu
 
 - `SPECS/Workplan.md` as the main tasks tracker (phases, priorities, status).
 - `SPECS/INPROGRESS/next.md` (if it exists) to note what is already active.
-- Notes in `AGENTS.md` for related constraints.
+- `AGENTS.md` (optional) — agent-specific constraints, if present in the repo.
 
 ## Algorithm
 
@@ -23,13 +23,6 @@ Choose the next task from the workplan without re-planning. SELECT keeps the "cu
 4. Write `SPECS/INPROGRESS/next.md` with only the metadata below (no implementation details).
 5. Highlight the selected task in the workplan by appending `**INPROGRESS**` or similar marker.
 
-Alternatively, use the helper script if available:
-```bash
-# Example (customize for your project):
-python scripts/pick_next_task.py
-# or
-node scripts/pick-next-task.js
-```
 
 ## Output (`SPECS/INPROGRESS/next.md` template)
 

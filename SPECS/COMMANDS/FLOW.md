@@ -44,7 +44,7 @@ Choose the next task from the workplan.
 
 **Actions:**
 - Read `SPECS/Workplan.md` for available tasks
-- Run task selection script (e.g., `scripts/pick_next_task.py`) or manually select
+- Select the next task manually or via a custom project script
 - Update `SPECS/INPROGRESS/next.md` with chosen task metadata
 
 **Commit via [`COMMIT`](PRIMITIVES/COMMIT.md):**
@@ -161,53 +161,27 @@ Archive REVIEW_{subject} report
 
 ## Project Configuration
 
-Flow uses template files in `SPECS/TEMPLATES/` for project-specific settings. These are referenced by workflow commands using `@` notation.
+Flow reads project-specific values from `.flow/params.yaml` at the repo root. This file is yours — update Flow by replacing `SPECS/`, not this file.
 
 ### First Time Setup
 
-Run [`SETUP`](SETUP.md) to configure Flow for your project:
+Run [`SETUP`](SETUP.md) to create `.flow/params.yaml`:
 
 ```bash
-# Read the setup guide
-cat SPECS/COMMANDS/SETUP.md
-
-# Then edit the template files:
-edit SPECS/TEMPLATES/ProjectInfo.md     # Project name, description
-edit SPECS/TEMPLATES/QualityGates.md    # Test, lint, coverage commands
-edit SPECS/TEMPLATES/NFRs.md            # Performance budgets (optional)
-edit SPECS/TEMPLATES/Structure.md       # Directory layout
+mkdir -p .flow
+# Fill in .flow/params.yaml — see SETUP.md for the template
 ```
 
-### Template Files
+### Params Sections
 
-| Template | Purpose | Referenced By |
-|----------|---------|---------------|
-| `@SPECS/TEMPLATES/ProjectInfo.md` | Project metadata | Commands for context |
-| `@SPECS/TEMPLATES/QualityGates.md` | Quality commands | EXECUTE.md |
-| `@SPECS/TEMPLATES/NFRs.md` | Performance constraints | REVIEW.md |
-| `@SPECS/TEMPLATES/Structure.md` | Directory layout | EXECUTE.md |
+| Section | Purpose | Used By |
+|---------|---------|---------|
+| `project.*` | Project name, language, default branch | all commands |
+| `verify.*` | Test, lint, format, coverage commands | EXECUTE |
+| `nfrs.*` | Performance budgets | REVIEW |
+| `structure.*` | Key directory paths | EXECUTE, ARCHIVE |
 
-### Example: Quality Gates Template
-
-Your `QualityGates.md` might look like:
-
-```markdown
-## Quality Gate Commands
-
-### Testing
-```bash
-pytest
-```
-
-### Linting
-```bash
-ruff check src/
-```
-
-**Coverage Threshold:** 80%
-```
-
-The `EXECUTE.md` command references this when running validations.
+Commands reference it as `[Params](.flow/params.yaml)` and read only the sections they need.
 
 ---
 

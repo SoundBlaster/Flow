@@ -10,8 +10,7 @@ EXECUTE is a lightweight workflow wrapper for implementing tasks. It ensures the
 
 - `SPECS/INPROGRESS/{TASK_ID}_{TASK_NAME}.md` produced by PLAN.
 - `SPECS/INPROGRESS/next.md` to know the chosen task.
-- `@SPECS/TEMPLATES/QualityGates.md` — project quality gate commands.
-- `@SPECS/TEMPLATES/Structure.md` — project directory layout.
+- [Params](.flow/params.yaml) — project configuration (`verify.*` and `structure.*` sections).
 
 ## Steps
 
@@ -26,11 +25,9 @@ EXECUTE is a lightweight workflow wrapper for implementing tasks. It ensures the
    - Use the PRD task plan for your commits (one commit per major change is ideal).
 
 3. **REQUIRED Post-flight validation**
-   Run your project's quality gates defined in:
-   
-   @SPECS/TEMPLATES/QualityGates.md
-   
-   **Common patterns (if templates not yet configured):**
+   Run your project's quality gates from [Params](.flow/params.yaml) under `verify.*`:
+
+   **Common patterns (if params not yet configured):**
    - Tests: `npm test`, `pytest`, `cargo test`, `go test`, etc.
    - Linting: `npm run lint`, `ruff check src/`, `cargo clippy`, `golangci-lint`, etc.
    - Type checking: `npm run typecheck`, `mypy src/`, `cargo check`, etc. (if configured)
@@ -90,11 +87,9 @@ go vet ./...               # Static analysis
 
 ## Project Structure
 
-Your project's directory layout is defined in:
+Your project's directory layout is defined in [Params](.flow/params.yaml) under `structure.*`.
 
-@SPECS/TEMPLATES/Structure.md
-
-**Generic structure (if templates not yet configured):**
+**Generic structure (if params not yet configured):**
 ```
 /
 ├── src/ or lib/ or app/     # Source code (language-dependent)
@@ -119,6 +114,6 @@ Before committing, ensure (as defined in your QualityGates.md template):
 ## Notes
 
 - EXECUTE does not invent steps; it only organizes pre/post validations around the PRD.
-- Read `@SPECS/TEMPLATES/QualityGates.md` for your project's specific quality gate commands.
-- Run `SETUP` command first if templates are not configured.
+- Read [Params](.flow/params.yaml) for your project's quality gate commands.
+- Run `SETUP` if `.flow/params.yaml` does not exist yet.
 - When the task is complete, mark the PRD ready for ARCHIVE.

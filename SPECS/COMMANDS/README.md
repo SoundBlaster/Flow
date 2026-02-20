@@ -35,29 +35,39 @@ Running `PROGRESS` lets you keep `next.md` up to date during long tasks, while `
 ## Structure
 
 ```
+.flow/
+└── params.yaml                  # Your project config (survives Flow updates)
+
 SPECS/
-├── Workplan.md         # Main task tracker
-├── CONFIG.md           # Project-specific configuration (optional)
-├── ARCHIVE/            # Completed PRDs and specs
-│   ├── INDEX.md        # Archive index
-│   └── {TASK_ID}_{TASK_NAME}/  # Task-specific folder
+├── Workplan.md                  # Your task tracker        ← user data
+├── ARCHIVE/                     # Completed PRDs           ← user data
+│   ├── INDEX.md
+│   └── {TASK_ID}_{TASK_NAME}/
 │       ├── {TASK_ID}_{TASK_NAME}.md
 │       └── {TASK_ID}_Validation_Report.md
-├── INPROGRESS/         # Active task metadata and working PRDs
-│   ├── next.md         # Current task summary
-│   └── {TASK_ID}_{TASK_NAME}.md  # Detailed PRD per task
-├── RULES/              # Writing rules (optional)
-├── COMMANDS/           # This folder
-│   ├── README.md
-│   ├── SELECT.md
-│   ├── PLAN.md
-│   ├── EXECUTE.md
-│   ├── PROGRESS.md
-│   ├── REVIEW.md
-│   ├── ARCHIVE.md
-│   ├── REBUILD.md
-│   └── PRIMITIVES/     # Helper primitives
-└── ...others…          # Documentation, etc.
+├── INPROGRESS/                  # Active tasks             ← user data
+│   ├── next.md
+│   └── {TASK_ID}_{TASK_NAME}.md
+└── COMMANDS/                    # ← update Flow by replacing this folder
+    ├── README.md
+    ├── FLOW.md
+    ├── SETUP.md
+    ├── SELECT.md
+    ├── PLAN.md
+    ├── EXECUTE.md
+    ├── REVIEW.md
+    ├── ARCHIVE.md
+    ├── PROGRESS.md
+    ├── REBUILD.md
+    ├── Workplan_Example.md      # Template → SPECS/Workplan.md
+    ├── Archive_Index_Example.md # Template → SPECS/ARCHIVE/INDEX.md
+    ├── next_example.md          # Template → SPECS/INPROGRESS/next.md
+    └── PRIMITIVES/
+        ├── COMMIT.md
+        ├── ARCHIVE_TASK.md
+        ├── FOLLOW_UP.md
+        ├── DOCS.md
+        └── REFACTORING.md
 ```
 
 ## Quick Start
@@ -67,48 +77,56 @@ SPECS/
 3. Run `EXECUTE` to follow the PRD, run tests/linting, and commit.
 4. Repeat. When a task finishes, move it to `SPECS/ARCHIVE/` via ARCHIVE.
 
+## Installation
+
+```bash
+# In the Flow repo, run:
+./install.sh /path/to/your/repo
+
+# Or from inside your repo:
+/path/to/flow/install.sh
+```
+
+The script copies `SPECS/COMMANDS/` and creates `SPECS/Workplan.md`, `SPECS/ARCHIVE/INDEX.md`, and `SPECS/INPROGRESS/next.md` from the example templates — skipping any that already exist.
+
+**To update Flow later:** run `install.sh` again. It only overwrites `SPECS/COMMANDS/` — your workplan, archive, and `.flow/params.yaml` are never touched.
+
 ## First-Time Setup
 
-**New to Flow? Start with SETUP:**
+After installing:
 
-1. Read [`SETUP.md`](./SETUP.md) — guides you through configuration
-2. Edit template files in `SPECS/TEMPLATES/`:
-   - `ProjectInfo.md` — project name, description, stack
-   - `QualityGates.md` — your test/lint/coverage commands
-   - `NFRs.md` — performance budgets (optional)
-   - `Structure.md` — directory layout (optional)
+1. Fill in `.flow/params.yaml` — see [`SETUP.md`](./SETUP.md) for the template
+2. Edit `SPECS/Workplan.md` with your actual tasks
 
-## Customization via Templates
+## Customization
 
-Flow uses **template files** instead of a rigid config file:
+Flow reads project-specific values from `.flow/params.yaml` at the repo root:
 
-```
-SPECS/TEMPLATES/
-├── ProjectInfo.md      # @SPECS/TEMPLATES/ProjectInfo.md
-├── QualityGates.md     # @SPECS/TEMPLATES/QualityGates.md
-├── NFRs.md             # @SPECS/TEMPLATES/NFRs.md
-└── Structure.md        # @SPECS/TEMPLATES/Structure.md
-```
+```yaml
+project:
+  name: MyProject
+  default_branch: main
 
-Commands reference these templates using `@` notation. Example from EXECUTE.md:
+verify:
+  tests: npm test
+  lint: npm run lint
+  coverage_threshold: 80
 
-```markdown
-## Quality Gates
+nfrs:
+  api_response_ms: 200
 
-@SPECS/TEMPLATES/QualityGates.md
-
-Run the commands defined above.
+structure:
+  source: src/
+  tests: tests/
 ```
 
-This means:
-- Templates are human-readable Markdown
-- You can use formatting, comments, examples
-- Commands get your project-specific instructions automatically
-- No special parsing or syntax to learn
+Commands reference it as `[Params](.flow/params.yaml)`. See [SETUP.md](./SETUP.md) to create yours.
+
+This file is yours — update Flow by replacing `SPECS/`, not `.flow/`.
 
 ## Notes
 
-- **Run SETUP first** to configure templates for your project
-- Keep `SPECS/INPROGRESS/` slim—only one task should be active at a time.
+- **Run SETUP first** to create `.flow/params.yaml` for your project
+- Keep `SPECS/INPROGRESS/` slim — only one task should be active at a time.
 - Document completed work in `SPECS/ARCHIVE/` (PRDs stay for reference) and update `SPECS/Workplan.md` when needed.
-- This workflow is language-agnostic. Configure your quality gates in `SPECS/TEMPLATES/QualityGates.md`.
+- This workflow is language-agnostic. Configure your quality gates in `.flow/params.yaml` under `verify.*`.

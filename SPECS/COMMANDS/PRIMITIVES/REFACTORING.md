@@ -111,4 +111,4 @@ npm run lint / ruff check src/ / cargo clippy / golangci-lint
 npm run test:coverage / pytest --cov / cargo tarpaulin / go test -cover
 ```
 
-Check `SPECS/CONFIG.md` for project-specific commands.
+Check [Params](.flow/params.yaml) under `verify.*` for project-specific commands.
