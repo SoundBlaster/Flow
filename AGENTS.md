@@ -76,9 +76,9 @@ Follow these patterns when committing during workflow execution:
 
 ### File Naming Conventions
 
-- Task PRD: `SPECS/INPROGRESS/{TASK_ID}_{TASK_NAME}_PRD.md`
+- Task PRD: `SPECS/INPROGRESS/{TASK_ID}_{TASK_NAME}.md`
 - Validation Report: `SPECS/INPROGRESS/{TASK_ID}_Validation_Report.md`
-- Review Report: `SPECS/INPROGRESS/{TASK_ID}_Review.md`
+- Review Report: `SPECS/INPROGRESS/REVIEW_{subject}.md`
 - Archive folder: `SPECS/ARCHIVE/{TASK_ID}_{TASK_NAME}/`
 
 ### Git Workflow
