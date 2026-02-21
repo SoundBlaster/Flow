@@ -1,6 +1,6 @@
 # Flow — Agentic Workflow Framework
 
-**Version:** 1.0.0
+**Version:** 1.1.0
 
 > **Flow** is a documentation-driven agentic workflow framework for software development.
 
