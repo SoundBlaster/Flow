@@ -10,7 +10,7 @@ Apply a structured code review to any set of commits or staged changes. This com
 
 - Current git branch (commits since `main`/`origin/main`) or any explicit commit range
 - Related PRD or workplan for context (from `SPECS/INPROGRESS` or `SPECS/Workplan.md`)
-- [Params](.flow/params.yaml) — performance budgets under `nfrs.*` (optional)
+- [Params](.flow/params.yaml) — performance budgets under `nfrs.*`, PR template under `github.pr_template` (both optional)
 
 ## Algorithm
 
@@ -62,6 +62,7 @@ Apply a structured code review to any set of commits or staged changes. This com
 
 ### Next Steps
 - Follow-up actions, docs to update, etc.
+- If `github.pr_template` is set in [Params](.flow/params.yaml), verify the PR body matches the template before merging.
 ```
 
 6. **Create backlog tasks** for actionable findings (if any):

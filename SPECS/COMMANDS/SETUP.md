@@ -49,6 +49,11 @@ nfrs:
 structure:
   source: src/
   tests: tests/
+
+# Optional: GitHub template links (detected by SETUP, used by REVIEW)
+# github:
+#   pr_template: .github/pull_request_template.md
+#   issue_templates_dir: .github/ISSUE_TEMPLATE/
 ```
 
 ## Required vs Optional Fields
@@ -65,6 +70,8 @@ structure:
 | `verify.coverage_threshold` | no | EXECUTE, REVIEW |
 | `nfrs.*` | no | REVIEW |
 | `structure.*` | no | EXECUTE, ARCHIVE |
+| `github.pr_template` | no | REVIEW |
+| `github.issue_templates_dir` | no | REVIEW |
 
 ## Quick SETUP (For AI Agents)
 
@@ -118,13 +125,32 @@ Read these files to infer the actual commands and thresholds:
 **Go:**
 - `verify.tests: go test ./...`, `verify.lint: golangci-lint run`
 
-### Phase 4 — Detect CI and pre-commit
+### Phase 4 — Detect CI, pre-commit, and GitHub templates
 
-These don't change `verify.*` commands but inform coverage thresholds and completeness:
+These don't change `verify.*` commands but inform coverage thresholds, completeness, and PR workflow:
 
 - `.github/workflows/` — scan for coverage threshold values and what gates are enforced in CI
 - `.pre-commit-config.yaml` — lists configured hooks; note any linters or formatters not yet captured
 - `.githooks/` — project-specific git hooks
+
+**GitHub templates** — if any of these exist, add a `github:` section to `params.yaml`:
+
+| Path | Key |
+|------|-----|
+| `.github/pull_request_template.md` | `github.pr_template` |
+| `docs/pull_request_template.md` | `github.pr_template` |
+| `pull_request_template.md` | `github.pr_template` |
+| `.github/PULL_REQUEST_TEMPLATE/` | `github.pr_templates_dir` |
+| `.github/ISSUE_TEMPLATE/` | `github.issue_templates_dir` |
+
+Example `params.yaml` snippet when templates are found:
+```yaml
+github:
+  pr_template: .github/pull_request_template.md
+  issue_templates_dir: .github/ISSUE_TEMPLATE/
+```
+
+Commands like REVIEW reference `github.pr_template` to remind contributors what the PR body should contain before merging.
 
 ### Phase 5 — Fill in params.yaml
 
