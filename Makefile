@@ -14,13 +14,16 @@ test: version-check ref-check install-test idempotency-test lint
 version-check:
 	@echo "==> version-check ($(VERSION))"
 	@failed=0; \
-	for f in $(COMMANDS_DIR)/*.md; do \
-		if grep -q "^\*\*Version:\*\*" "$$f"; then \
-			v=$$(grep "^\*\*Version:\*\*" "$$f" | awk '{print $$2}'); \
-			if [ "$$v" != "$(VERSION)" ]; then \
-				echo "  FAIL $$f: found $$v"; \
-				failed=1; \
-			fi; \
+	for f in $(shell find $(COMMANDS_DIR) -type f -name '*.md' | sort); do \
+		if ! grep -q "^\*\*Version:\*\*" "$$f"; then \
+			echo "  FAIL $$f: missing **Version:** header"; \
+			failed=1; \
+			continue; \
+		fi; \
+		v=$$(grep -m1 "^\*\*Version:\*\*" "$$f" | awk '{print $$2}'); \
+		if [ "$$v" != "$(VERSION)" ]; then \
+			echo "  FAIL $$f: found $$v"; \
+			failed=1; \
 		fi; \
 	done; \
 	[ $$failed -eq 0 ] && echo "  ok"; \
