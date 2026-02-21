@@ -97,4 +97,13 @@ lint:
 
 ## Show available targets
 help:
-	@grep -E '^## ' $(MAKEFILE_LIST) | sed 's/## //' | awk '{cmd=$$0; getline desc; print cmd": "desc}'
+	@awk ' \
+		/^## / { desc=substr($$0, 4); next } \
+		/^[a-zA-Z0-9_.-]+:/ { \
+			if (desc != "") { \
+				split($$1, target, ":"); \
+				printf "%-20s %s\n", target[1], desc; \
+				desc=""; \
+			} \
+		} \
+	' $(MAKEFILE_LIST)
