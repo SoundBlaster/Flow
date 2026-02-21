@@ -58,7 +58,7 @@ Typical wrapper target in consumer repos:
 
 ```make
 flow-install:
-	@FLOW_VERSION?=v1.2.0 bash tools/flow-bootstrap.sh
+  @FLOW_VERSION?=v1.2.0 bash tools/flow-bootstrap.sh
 ```
 
 ### 2. Configure for Your Project
