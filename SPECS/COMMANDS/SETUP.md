@@ -68,27 +68,73 @@ structure:
 
 ## Quick SETUP (For AI Agents)
 
-If you're an AI agent setting up Flow for a user:
+If you're an AI agent setting up Flow for a user, work through these phases in order. Stop as soon as you have enough to fill `verify.*` confidently.
 
-1. **Detect tech stack** from existing project files:
-   - `package.json` → JavaScript/TypeScript, npm/yarn
-   - `pyproject.toml`, `requirements.txt` → Python, pip
-   - `Cargo.toml` → Rust, cargo
-   - `go.mod` → Go, go modules
-   - `Package.swift` → Swift, swift package manager
+### Phase 1 — Detect task runner
 
-2. **Infer or ask** the user for:
-   - Project name and brief description
-   - Test, lint, and format commands
-   - Coverage threshold
+Check for a task runner first. If one exists, its targets are the ground truth — use them directly rather than reconstructing individual tool commands.
 
-3. **Create `.flow/params.yaml`** with the template above, filled in.
+| File | Likely commands |
+|------|----------------|
+| `Makefile` with `test`/`lint`/`check` targets | `make test`, `make lint`, `make check` |
+| `Makefile` with a master `check` or `all` target | single `make check` covers everything |
+| `justfile` | `just test`, `just lint` |
+| `Taskfile.yml` | `task test`, `task lint` |
+| `scripts/local-ci/run-all.sh` | `./scripts/local-ci/run-all.sh` |
 
-4. **Verify** the key commands work:
-   ```bash
-   <test_command> --help || echo "Adjust verify.tests in .flow/params.yaml"
-   <lint_command> --help || echo "Adjust verify.lint in .flow/params.yaml"
-   ```
+> **Rule:** if `make check` exists and runs tests + lint together, set `verify.tests: make check` and omit `verify.lint`. Don't duplicate.
+
+### Phase 2 — Detect language and package manager
+
+| File | Language | Package manager |
+|------|----------|----------------|
+| `Package.swift` | Swift | swift |
+| `package.json` | JavaScript/TypeScript | npm / yarn / pnpm |
+| `pyproject.toml`, `requirements.txt` | Python | pip / uv |
+| `Cargo.toml` | Rust | cargo |
+| `go.mod` | Go | go |
+
+### Phase 3 — Detect quality gate configuration
+
+Read these files to infer the actual commands and thresholds:
+
+**Swift:**
+- `.swiftlint.yml` present → `verify.lint: swiftlint lint`
+- `.swift-format` present → `verify.format: swift-format lint --recursive Sources/`
+- `.swiftlint.baseline.json` present → add `--baseline .swiftlint.baseline.json` to lint command
+- `.swift-version` / `.xcode-version` → note version constraints in `project.description`
+
+**Python:**
+- `pyproject.toml` with `[tool.pytest.ini_options]` → `verify.tests: pytest`; read `--cov-fail-under` for `coverage_threshold`
+- `pyproject.toml` with `[tool.ruff]` → `verify.lint: ruff check src/`, `verify.format: ruff format --check src/`
+- `pyproject.toml` with `[tool.mypy]` → `verify.typecheck: mypy src/`
+
+**JavaScript/TypeScript:**
+- `package.json` scripts → use `npm run <script>` for each detected script (`test`, `lint`, `format`, `typecheck`)
+
+**Rust:**
+- `verify.tests: cargo test`, `verify.lint: cargo clippy -- -D warnings`, `verify.format: cargo fmt --check`
+
+**Go:**
+- `verify.tests: go test ./...`, `verify.lint: golangci-lint run`
+
+### Phase 4 — Detect CI and pre-commit
+
+These don't change `verify.*` commands but inform coverage thresholds and completeness:
+
+- `.github/workflows/` — scan for coverage threshold values and what gates are enforced in CI
+- `.pre-commit-config.yaml` — lists configured hooks; note any linters or formatters not yet captured
+- `.githooks/` — project-specific git hooks
+
+### Phase 5 — Fill in params.yaml
+
+With the above, generate `.flow/params.yaml`. Prefer task runner commands (Phase 1) over individual tool commands (Phase 3) when both exist.
+
+**Verify** the key commands actually work:
+```bash
+<test_command> --help || echo "Adjust verify.tests in .flow/params.yaml"
+<lint_command> --help || echo "Adjust verify.lint in .flow/params.yaml"
+```
 
 ## Verification Checklist
 
