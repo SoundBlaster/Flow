@@ -1,4 +1,4 @@
-.PHONY: all test version-check ref-check install-test minimal-bundle-test bootstrap-verify-test bootstrap-mismatch-test idempotency-test md-lint lint help
+.PHONY: all test version-check ref-check install-test minimal-bundle-test bootstrap-verify-test bootstrap-mismatch-test idempotency-test md-lint md-links lint help
 
 COMMANDS_DIR := SPECS/COMMANDS
 VERSION      := $(shell cat SPECS/VERSION 2>/dev/null | tr -d '[:space:]')
@@ -180,6 +180,15 @@ md-lint:
 		exit 1; \
 	fi
 	@npx -y markdownlint-cli2 --config .markdownlint-cli2.jsonc && echo "  ok"
+
+## Validate markdown cross-links in SPECS with lychee
+md-links:
+	@echo "==> md-links"
+	@if ! command -v lychee > /dev/null 2>&1; then \
+		echo "  FAIL: lychee is required (brew install lychee)"; \
+		exit 1; \
+	fi
+	@find SPECS -type f -name "*.md" -print0 | xargs -0 lychee --offline --include-fragments --no-progress && echo "  ok"
 
 ## Lint install.sh with shellcheck (skipped if not installed)
 lint:
