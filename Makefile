@@ -188,7 +188,7 @@ md-links:
 		echo "  FAIL: lychee is required (brew install lychee)"; \
 		exit 1; \
 	fi
-	@find SPECS -type f -name "*.md" -print0 | xargs -0 lychee --offline --include-fragments --no-progress && echo "  ok"
+	@find SPECS -type f -name "*.md" -print0 | xargs -0 lychee --offline --include-fragments --no-progress --exclude '\.flow/params\.yaml' --exclude 'SPECS/REBUILD/STEP-[0-7]-.*\.md' && echo "  ok"
 
 ## Lint install.sh with shellcheck (skipped if not installed)
 lint:

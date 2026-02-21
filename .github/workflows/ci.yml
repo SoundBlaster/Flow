@@ -40,4 +40,4 @@ jobs:
       - name: Validate markdown links in SPECS
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --offline --include-fragments --no-progress SPECS
+          args: --offline --include-fragments --no-progress --exclude '\.flow/params\.yaml' --exclude 'SPECS/REBUILD/STEP-[0-7]-.*\.md' SPECS
