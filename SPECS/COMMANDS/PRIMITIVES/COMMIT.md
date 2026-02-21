@@ -5,7 +5,7 @@ description: "Use when the workflow requires creating a focused git commit for t
 
 # COMMIT — Record Changes
 
-**Version:** 1.1.0
+**Version:** 1.2.0
 
 ## Purpose
 
