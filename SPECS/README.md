@@ -18,7 +18,6 @@ SPECS/
     ├── ARCHIVE.md
     ├── REVIEW.md
     ├── PROGRESS.md
-    ├── REBUILD.md
     └── PRIMITIVES/
         ├── COMMIT.md
         ├── ARCHIVE_TASK.md
