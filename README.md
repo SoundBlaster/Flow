@@ -9,9 +9,9 @@
 Flow mimics real-world software development through a linear, step-by-step execution of commands. Each command is a prompt that guides AI agents (and humans) through a structured workflow.
 
 ```
-SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → FOLLOW-UP → ARCHIVE-REVIEW
-   ↓       ↓        ↓         ↓         ↓          ↓             ↓
- COMMIT  COMMIT   COMMIT    COMMIT    COMMIT     COMMIT        COMMIT
+BRANCH → SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → FOLLOW-UP → ARCHIVE-REVIEW
+   ↓        ↓       ↓        ↓         ↓         ↓          ↓             ↓
+ COMMIT   COMMIT  COMMIT   COMMIT    COMMIT    COMMIT     COMMIT        COMMIT
 ```
 
 ## Philosophy
@@ -66,11 +66,14 @@ edit SPECS/Workplan.md    # Replace example tasks with yours
 
 Follow the steps in `SPECS/COMMANDS/FLOW.md`:
 
-1. **SELECT** — Choose the next task from the workplan
-2. **PLAN** — Create the implementation PRD
-3. **EXECUTE** — Implement with quality gates
-4. **ARCHIVE** — Move completed work to archive
-5. **REVIEW** — Review and capture findings
+1. **BRANCH** — Create a feature branch for the task
+2. **SELECT** — Choose the next task from the workplan
+3. **PLAN** — Create the implementation PRD
+4. **EXECUTE** — Implement with quality gates
+5. **ARCHIVE** — Move completed work to archive
+6. **REVIEW** — Review and capture findings
+7. **FOLLOW-UP** — Add remediation tasks when review finds issues
+8. **ARCHIVE-REVIEW** — Archive the review report
 
 ## Structure
 
