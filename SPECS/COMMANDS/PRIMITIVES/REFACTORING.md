@@ -5,7 +5,7 @@ description: "Use when code needs restructuring for clarity, maintainability, or
 
 # REFACTORING — Code Restructuring Guide
 
-**Version:** 1.0.0
+**Version:** 1.1.0
 
 ## Purpose
 
