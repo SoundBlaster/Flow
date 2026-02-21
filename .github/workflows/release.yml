@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build minimal release bundle
+        run: |
+          set -euo pipefail
+
+          bundle_dir="flow-${GITHUB_REF_NAME}-minimal"
+          echo "BUNDLE_DIR=${bundle_dir}" >> "$GITHUB_ENV"
+
+          mkdir -p "${bundle_dir}/SPECS"
+          cp install.sh "${bundle_dir}/install.sh"
+          cp -r SPECS/COMMANDS "${bundle_dir}/SPECS/COMMANDS"
+
+          zip -r "${bundle_dir}.zip" "${bundle_dir}"
+
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          artifact="${BUNDLE_DIR}.zip"
+
+          if gh release view "${GITHUB_REF_NAME}" > /dev/null 2>&1; then
+            gh release upload "${GITHUB_REF_NAME}" "${artifact}" --clobber
+          else
+            gh release create "${GITHUB_REF_NAME}" \
+              --title "Flow ${GITHUB_REF_NAME}" \
+              --generate-notes \
+              "${artifact}"
+          fi

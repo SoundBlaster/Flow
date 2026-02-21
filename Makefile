@@ -1,4 +1,4 @@
-.PHONY: all test version-check ref-check install-test idempotency-test lint help
+.PHONY: all test version-check ref-check install-test minimal-bundle-test idempotency-test lint help
 
 COMMANDS_DIR := SPECS/COMMANDS
 VERSION      := $(shell cat SPECS/VERSION 2>/dev/null | tr -d '[:space:]')
@@ -6,7 +6,7 @@ VERSION      := $(shell cat SPECS/VERSION 2>/dev/null | tr -d '[:space:]')
 all: test
 
 ## Run all integrity checks
-test: version-check ref-check install-test idempotency-test lint
+test: version-check ref-check install-test minimal-bundle-test idempotency-test lint
 	@echo ""
 	@echo "All checks passed."
 
@@ -69,6 +69,31 @@ install-test:
 	if [ ! -d "$$tmp/.flow" ]; then \
 		echo "  FAIL missing: .flow/"; failed=1; \
 	fi; \
+	[ $$failed -eq 0 ] && echo "  ok"; \
+	exit $$failed
+
+## Test install.sh works from a minimal bundle (install.sh + SPECS/COMMANDS only)
+minimal-bundle-test:
+	@echo "==> minimal-bundle-test"
+	@src=$$(mktemp -d); \
+	dst=$$(mktemp -d); \
+	trap "rm -rf $$src $$dst" EXIT; \
+	mkdir -p "$$src/SPECS"; \
+	cp install.sh "$$src/install.sh"; \
+	cp -r SPECS/COMMANDS "$$src/SPECS/COMMANDS"; \
+	chmod +x "$$src/install.sh"; \
+	"$$src/install.sh" "$$dst" > /dev/null; \
+	failed=0; \
+	for f in \
+		"$$dst/SPECS/VERSION" \
+		"$$dst/SPECS/COMMANDS/FLOW.md" \
+		"$$dst/SPECS/Workplan.md" \
+		"$$dst/SPECS/ARCHIVE/INDEX.md" \
+		"$$dst/SPECS/INPROGRESS/next.md"; do \
+		if [ ! -f "$$f" ]; then \
+			echo "  FAIL missing: $$f"; failed=1; \
+		fi; \
+	done; \
 	[ $$failed -eq 0 ] && echo "  ok"; \
 	exit $$failed
 
