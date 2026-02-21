@@ -15,7 +15,6 @@ This folder holds the command prompts that orchestrate the documentation-driven 
 | PROGRESS | Optional checkpointing inside `next.md` | [PROGRESS.md](./PROGRESS.md) |
 | REVIEW  | Produce structured code reviews | [REVIEW.md](./REVIEW.md) |
 | ARCHIVE | Move finished PRDs into `SPECS/ARCHIVE/` | [ARCHIVE.md](./ARCHIVE.md) |
-| REBUILD | Spec-driven rebuild workflow | [REBUILD.md](./REBUILD.md) |
 
 Additional helpers live in `PRIMITIVES/` (toolchain, commits, doc updates, archive maintenance).
 Main tasks tracker: `SPECS/Workplan.md`.
@@ -58,7 +57,6 @@ SPECS/
     ├── REVIEW.md
     ├── ARCHIVE.md
     ├── PROGRESS.md
-    ├── REBUILD.md
     └── PRIMITIVES/
         ├── COMMIT.md
         ├── ARCHIVE_TASK.md

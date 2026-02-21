@@ -203,4 +203,3 @@ Commands reference it as `[Params](.flow/params.yaml)` and read only the section
 - **PROGRESS** — Note temporary checkpoints inside `next.md`
 - **Primitives** — See `SPECS/COMMANDS/PRIMITIVES/` for helper steps
 - **Workflow** — `SPECS/Workplan.md` is the master task tracker
-- **REBUILD** — See `SPECS/COMMANDS/REBUILD.md` for spec-driven rebuilds
