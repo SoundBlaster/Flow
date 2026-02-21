@@ -12,10 +12,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "Installing Flow into: $TARGET"
 echo ""
 
-# --- COMMANDS (always updated) ---
+# --- COMMANDS and VERSION (always updated) ---
 mkdir -p "$TARGET/SPECS/COMMANDS"
 cp -r "$SCRIPT_DIR/SPECS/COMMANDS/." "$TARGET/SPECS/COMMANDS/"
-echo "✓ SPECS/COMMANDS/ updated"
+cp "$SCRIPT_DIR/SPECS/VERSION" "$TARGET/SPECS/VERSION"
+echo "✓ SPECS/COMMANDS/ updated ($(cat "$SCRIPT_DIR/SPECS/VERSION"))"
 
 # --- User files (only created if missing) ---
 

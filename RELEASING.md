@@ -8,7 +8,7 @@ Flow uses [Semantic Versioning](https://semver.org): `MAJOR.MINOR.PATCH`
 - **MINOR** — new commands, new params fields, backwards-compatible changes
 - **MAJOR** — breaking changes to workflow structure or params schema
 
-The single source of truth is the `VERSION` file at the repo root. Each command file also carries a matching `**Version:**` header — update both when releasing.
+The single source of truth is `SPECS/VERSION`. Each command file also carries a matching `**Version:**` header — update both when releasing. The install script copies `SPECS/VERSION` into the target repo so users can always check which version of Flow they have installed.
 
 ## Release Artifact
 
@@ -16,21 +16,22 @@ A release contains only what users need to install Flow:
 
 ```
 install.sh
+SPECS/VERSION
 SPECS/COMMANDS/
 ```
 
-The rest of the repo (this file, `SPECS/Idea.md`, `docs/`, etc.) is not included.
+The rest of the repo (this file, `README.md`, folder `docs/`, etc.) is not included.
 
 ## Release Process (Manual)
 
 ### 1. Bump the version
 
-Update `VERSION` file and the `**Version:**` header in every `SPECS/COMMANDS/*.md` that changed.
+Update `SPECS/VERSION` and the `**Version:**` header in every `SPECS/COMMANDS/*.md` that changed.
 
 ### 2. Commit
 
 ```bash
-git add VERSION SPECS/COMMANDS/
+git add SPECS/VERSION SPECS/COMMANDS/
 git commit -m "Release v{VERSION}"
 ```
 
@@ -56,8 +57,9 @@ GitHub will attach the source zip automatically. Optionally attach a trimmed art
 If you want a minimal zip without the full repo:
 
 ```bash
-mkdir -p /tmp/flow-release
+mkdir -p /tmp/flow-release/SPECS
 cp install.sh /tmp/flow-release/
+cp SPECS/VERSION /tmp/flow-release/SPECS/
 cp -r SPECS/COMMANDS /tmp/flow-release/SPECS/
 cd /tmp && zip -r flow-v{VERSION}.zip flow-release/
 gh release upload v{VERSION} /tmp/flow-release/flow-v{VERSION}.zip
@@ -86,7 +88,7 @@ When the release cadence justifies it, add `.github/workflows/release.yml`:
 
 ## Checklist
 
-- [ ] `VERSION` file updated
+- [ ] `SPECS/VERSION` updated
 - [ ] Command file headers updated
 - [ ] `CHANGELOG.md` entry added
 - [ ] Commit and tag pushed
