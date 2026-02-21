@@ -34,5 +34,25 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y shellcheck
 
+          arch="$(uname -m)"
+          case "$arch" in
+            x86_64|amd64) arch="x86_64" ;;
+            aarch64|arm64) arch="aarch64" ;;
+            *)
+              echo "Unsupported architecture for lychee: $arch"
+              exit 1
+              ;;
+          esac
+
+          lychee_version="v0.21.0"
+          lychee_tag="lychee-${lychee_version}"
+          curl -sSfL "https://github.com/lycheeverse/lychee/releases/download/${lychee_tag}/lychee-${arch}-unknown-linux-gnu.tar.gz" \
+            | tar -xz lychee
+          sudo install -m 0755 lychee /usr/local/bin/lychee
+          rm -f lychee
+
       - name: Run repository checks
         run: make test
+
+      - name: Validate markdown links in SPECS
+        run: make md-links
