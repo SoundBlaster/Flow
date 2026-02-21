@@ -59,9 +59,6 @@ SPECS/
     ├── ARCHIVE.md
     ├── PROGRESS.md
     ├── REBUILD.md
-    ├── Workplan_Example.md      # Template → SPECS/Workplan.md
-    ├── Archive_Index_Example.md # Template → SPECS/ARCHIVE/INDEX.md
-    ├── next_example.md          # Template → SPECS/INPROGRESS/next.md
     └── PRIMITIVES/
         ├── COMMIT.md
         ├── ARCHIVE_TASK.md

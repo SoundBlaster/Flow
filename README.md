@@ -89,6 +89,11 @@ SPECS/
 │   ├── next.md
 │   └── {TASK_ID}_{TASK_NAME}.md
 └── COMMANDS/                    # ← update Flow by replacing this folder
+
+templates/                           # Install-time scaffolding (not copied to user repos)
+├── Workplan_Example.md          # → SPECS/Workplan.md on first install
+├── Archive_Index_Example.md     # → SPECS/ARCHIVE/INDEX.md on first install
+└── next_example.md              # → SPECS/INPROGRESS/next.md on first install
     ├── FLOW.md                  # Main workflow reference
     ├── SETUP.md                 # Configuration guide
     ├── SELECT.md                # Task selection
@@ -96,9 +101,6 @@ SPECS/
     ├── EXECUTE.md               # Implementation
     ├── ARCHIVE.md               # Task archival
     ├── REVIEW.md                # Code review
-    ├── Workplan_Example.md      # Template → SPECS/Workplan.md
-    ├── Archive_Index_Example.md # Template → SPECS/ARCHIVE/INDEX.md
-    ├── next_example.md          # Template → SPECS/INPROGRESS/next.md
     └── PRIMITIVES/              # Helper commands
 ```
 

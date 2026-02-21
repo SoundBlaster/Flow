@@ -18,6 +18,7 @@ A release contains only what users need to install Flow:
 install.sh
 SPECS/VERSION
 SPECS/COMMANDS/
+templates/
 ```
 
 The rest of the repo (this file, `README.md`, folder `docs/`, etc.) is not included.
@@ -61,6 +62,7 @@ mkdir -p /tmp/flow-release/SPECS
 cp install.sh /tmp/flow-release/
 cp SPECS/VERSION /tmp/flow-release/SPECS/
 cp -r SPECS/COMMANDS /tmp/flow-release/SPECS/
+cp -r templates /tmp/flow-release/
 cd /tmp && zip -r flow-v{VERSION}.zip flow-release/
 gh release upload v{VERSION} /tmp/flow-release/flow-v{VERSION}.zip
 ```

@@ -22,7 +22,7 @@ echo "✓ SPECS/COMMANDS/ updated ($(cat "$SCRIPT_DIR/SPECS/VERSION"))"
 
 if [ ! -f "$TARGET/SPECS/Workplan.md" ]; then
   mkdir -p "$TARGET/SPECS"
-  cp "$SCRIPT_DIR/SPECS/COMMANDS/Workplan_Example.md" "$TARGET/SPECS/Workplan.md"
+  cp "$SCRIPT_DIR/templates/Workplan_Example.md" "$TARGET/SPECS/Workplan.md"
   echo "✓ SPECS/Workplan.md created"
 else
   echo "  SPECS/Workplan.md already exists — skipped"
@@ -30,7 +30,7 @@ fi
 
 if [ ! -f "$TARGET/SPECS/ARCHIVE/INDEX.md" ]; then
   mkdir -p "$TARGET/SPECS/ARCHIVE/_Historical"
-  cp "$SCRIPT_DIR/SPECS/COMMANDS/Archive_Index_Example.md" "$TARGET/SPECS/ARCHIVE/INDEX.md"
+  cp "$SCRIPT_DIR/templates/Archive_Index_Example.md" "$TARGET/SPECS/ARCHIVE/INDEX.md"
   echo "✓ SPECS/ARCHIVE/INDEX.md created"
 else
   echo "  SPECS/ARCHIVE/INDEX.md already exists — skipped"
@@ -38,7 +38,7 @@ fi
 
 if [ ! -f "$TARGET/SPECS/INPROGRESS/next.md" ]; then
   mkdir -p "$TARGET/SPECS/INPROGRESS"
-  cp "$SCRIPT_DIR/SPECS/COMMANDS/next_example.md" "$TARGET/SPECS/INPROGRESS/next.md"
+  cp "$SCRIPT_DIR/templates/next_example.md" "$TARGET/SPECS/INPROGRESS/next.md"
   echo "✓ SPECS/INPROGRESS/next.md created"
 else
   echo "  SPECS/INPROGRESS/next.md already exists — skipped"
