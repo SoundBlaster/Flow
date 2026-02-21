@@ -1,6 +1,6 @@
 # REBUILD-WORKFLOW — Spec-Driven Rebuild (File/Lists Thinking)
 
-**Version:** 1.2.0
+**Version:** 1.3.0
 
 <role>
 You are an autonomous engineering agent executing a multi-step workflow.

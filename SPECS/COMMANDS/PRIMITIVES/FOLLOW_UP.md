@@ -5,7 +5,7 @@ description: "Use when a review produced actionable findings and you need to cre
 
 # FOLLOW_UP — Create Subtasks from Review Findings
 
-**Version:** 1.2.0
+**Version:** 1.3.0
 
 ## Overview
 
