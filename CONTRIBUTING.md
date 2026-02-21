@@ -28,7 +28,7 @@ User configuration lives in `.flow/params.yaml` in each project repo — it is n
 
 1. Edit the file in `SPECS/COMMANDS/`
 2. If the change is user-visible, bump `**Version:**` in that file and update `SPECS/VERSION`
-3. Run `make test` — all checks must pass
+3. Run `make test` — all checks must pass (includes markdown linting for core docs)
 4. Open a PR
 
 ### Adding a new command
@@ -86,7 +86,13 @@ When bumping: update `SPECS/VERSION` and the `**Version:**` header in every file
 make test
 ```
 
-All targets must pass (lint is skipped if `shellcheck` is not installed).
+All targets must pass.
+
+Notes:
+- `make test` runs markdown linting via `markdownlint-cli2`, so `node`/`npx` are required locally.
+- Markdown lint scope is configured in `.markdownlint-cli2.jsonc`.
+- Phase 1 scope intentionally focuses on core docs (`README.md`, `CONTRIBUTING.md`, `RELEASING.md`, `SPECS/README.md`, `SPECS/COMMANDS/**/*.md`, `templates/**/*.md`).
+- Shell lint is still skipped if `shellcheck` is not installed.
 
 ## Commit Style
 

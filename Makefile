@@ -1,4 +1,4 @@
-.PHONY: all test version-check ref-check install-test minimal-bundle-test bootstrap-verify-test bootstrap-mismatch-test idempotency-test lint help
+.PHONY: all test version-check ref-check install-test minimal-bundle-test bootstrap-verify-test bootstrap-mismatch-test idempotency-test md-lint lint help
 
 COMMANDS_DIR := SPECS/COMMANDS
 VERSION      := $(shell cat SPECS/VERSION 2>/dev/null | tr -d '[:space:]')
@@ -6,7 +6,7 @@ VERSION      := $(shell cat SPECS/VERSION 2>/dev/null | tr -d '[:space:]')
 all: test
 
 ## Run all integrity checks
-test: version-check ref-check install-test minimal-bundle-test bootstrap-verify-test bootstrap-mismatch-test idempotency-test lint
+test: version-check ref-check install-test minimal-bundle-test bootstrap-verify-test bootstrap-mismatch-test idempotency-test md-lint lint
 	@echo ""
 	@echo "All checks passed."
 
@@ -167,6 +167,19 @@ idempotency-test:
 		exit 1; \
 	fi; \
 	echo "  ok"
+
+## Lint scoped markdown files with markdownlint-cli2
+md-lint:
+	@echo "==> md-lint"
+	@if ! command -v node > /dev/null 2>&1; then \
+		echo "  FAIL: node is required for markdown linting"; \
+		exit 1; \
+	fi
+	@if ! command -v npx > /dev/null 2>&1; then \
+		echo "  FAIL: npx is required for markdown linting"; \
+		exit 1; \
+	fi
+	@npx -y markdownlint-cli2 --config .markdownlint-cli2.jsonc && echo "  ok"
 
 ## Lint install.sh with shellcheck (skipped if not installed)
 lint:
