@@ -36,6 +36,31 @@ BRANCH → SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → FOLLOW-UP → 
 
 The installer copies `SPECS/COMMANDS/` and creates `SPECS/Workplan.md`, `SPECS/ARCHIVE/INDEX.md`, and `SPECS/INPROGRESS/next.md` from templates — skipping any that already exist.
 
+### Production Default: Pinned + Verified Bootstrap
+
+For working repositories, treat Flow as a tooling dependency. Pin a release tag and verify checksums before install.
+
+Reference bootstrap script:
+
+```bash
+bash docs/flow-bootstrap.sh .
+```
+
+Script contract (`docs/flow-bootstrap.sh`):
+
+- Reads `FLOW_VERSION` (default pinned value)
+- Reads `FLOW_REPO` (defaults to `SoundBlaster/Flow`)
+- Downloads `flow-${FLOW_VERSION}-minimal.zip` and `SHA256SUMS` from the same release
+- Fails hard on missing assets or checksum mismatch
+- Installs only after verification passes
+
+Typical wrapper target in consumer repos:
+
+```make
+flow-install:
+	@FLOW_VERSION?=v1.2.0 bash tools/flow-bootstrap.sh
+```
+
 ### 2. Configure for Your Project
 
 ```bash
@@ -129,6 +154,12 @@ Commands reference it as `[Params](.flow/params.yaml)`. See `SPECS/COMMANDS/SETU
 # Your workplan, archive, and .flow/params.yaml are never touched
 ```
 
+## Security Notes
+
+- Release assets include `SHA256SUMS` for integrity verification.
+- Bootstrap verification is mandatory: mismatches must stop installation.
+- This avoids silent corruption/tampering and makes CI behavior deterministic.
+
 ## Commands
 
 | Command | Purpose |
@@ -165,6 +196,8 @@ Flow works with any language — configure your toolchain in `.flow/params.yaml`
 - `SPECS/COMMANDS/FLOW.md` — Workflow reference
 - `SPECS/COMMANDS/SETUP.md` — Configuration guide
 - `SPECS/COMMANDS/README.md` — Commands overview
+- `docs/flow-bootstrap.sh` — Reference secure bootstrap script for consumer repos
+- `docs/Flow_Dependency.md` — Tooling dependency contract and update pattern
 
 ## License
 

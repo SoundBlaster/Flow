@@ -1,4 +1,4 @@
-.PHONY: all test version-check ref-check install-test minimal-bundle-test idempotency-test lint help
+.PHONY: all test version-check ref-check install-test minimal-bundle-test bootstrap-verify-test bootstrap-mismatch-test idempotency-test lint help
 
 COMMANDS_DIR := SPECS/COMMANDS
 VERSION      := $(shell cat SPECS/VERSION 2>/dev/null | tr -d '[:space:]')
@@ -6,7 +6,7 @@ VERSION      := $(shell cat SPECS/VERSION 2>/dev/null | tr -d '[:space:]')
 all: test
 
 ## Run all integrity checks
-test: version-check ref-check install-test minimal-bundle-test idempotency-test lint
+test: version-check ref-check install-test minimal-bundle-test bootstrap-verify-test bootstrap-mismatch-test idempotency-test lint
 	@echo ""
 	@echo "All checks passed."
 
@@ -96,6 +96,63 @@ minimal-bundle-test:
 	done; \
 	[ $$failed -eq 0 ] && echo "  ok"; \
 	exit $$failed
+
+## Test docs/flow-bootstrap.sh with local release assets and SHA256 verification
+bootstrap-verify-test:
+	@echo "==> bootstrap-verify-test"
+	@release_root=$$(mktemp -d); \
+	target_root=$$(mktemp -d); \
+	src=$$(mktemp -d); \
+	trap "rm -rf $$release_root $$target_root $$src" EXIT; \
+	version="v-test"; \
+	artifact="flow-$${version}-minimal.zip"; \
+	mkdir -p "$$src/flow-$${version}-minimal/SPECS"; \
+	cp install.sh "$$src/flow-$${version}-minimal/install.sh"; \
+	cp -r SPECS/COMMANDS "$$src/flow-$${version}-minimal/SPECS/COMMANDS"; \
+	( cd "$$src" && zip -rq "$$artifact" "flow-$${version}-minimal" ); \
+	mkdir -p "$$release_root/$${version}"; \
+	mv "$$src/$$artifact" "$$release_root/$${version}/$$artifact"; \
+	if command -v sha256sum >/dev/null 2>&1; then \
+		( cd "$$release_root/$${version}" && sha256sum "$$artifact" > SHA256SUMS ); \
+	else \
+		( cd "$$release_root/$${version}" && shasum -a 256 "$$artifact" > SHA256SUMS ); \
+	fi; \
+	FLOW_VERSION="$$version" FLOW_RELEASE_BASE="file://$$release_root" bash docs/flow-bootstrap.sh "$$target_root" > /dev/null; \
+	failed=0; \
+	for f in \
+		"$$target_root/SPECS/VERSION" \
+		"$$target_root/SPECS/COMMANDS/FLOW.md" \
+		"$$target_root/SPECS/Workplan.md" \
+		"$$target_root/SPECS/ARCHIVE/INDEX.md" \
+		"$$target_root/SPECS/INPROGRESS/next.md"; do \
+		if [ ! -f "$$f" ]; then \
+			echo "  FAIL missing: $$f"; failed=1; \
+		fi; \
+	done; \
+	[ $$failed -eq 0 ] && echo "  ok"; \
+	exit $$failed
+
+## Test docs/flow-bootstrap.sh fails on checksum mismatch
+bootstrap-mismatch-test:
+	@echo "==> bootstrap-mismatch-test"
+	@release_root=$$(mktemp -d); \
+	target_root=$$(mktemp -d); \
+	src=$$(mktemp -d); \
+	trap "rm -rf $$release_root $$target_root $$src" EXIT; \
+	version="v-test"; \
+	artifact="flow-$${version}-minimal.zip"; \
+	mkdir -p "$$src/flow-$${version}-minimal/SPECS"; \
+	cp install.sh "$$src/flow-$${version}-minimal/install.sh"; \
+	cp -r SPECS/COMMANDS "$$src/flow-$${version}-minimal/SPECS/COMMANDS"; \
+	( cd "$$src" && zip -rq "$$artifact" "flow-$${version}-minimal" ); \
+	mkdir -p "$$release_root/$${version}"; \
+	mv "$$src/$$artifact" "$$release_root/$${version}/$$artifact"; \
+	echo "deadbeef  $$artifact" > "$$release_root/$${version}/SHA256SUMS"; \
+	if FLOW_VERSION="$$version" FLOW_RELEASE_BASE="file://$$release_root" bash docs/flow-bootstrap.sh "$$target_root" > /dev/null 2>&1; then \
+		echo "  FAIL: bootstrap succeeded with invalid checksum"; \
+		exit 1; \
+	fi; \
+	echo "  ok"
 
 ## Test install.sh does not overwrite existing user files on re-run
 idempotency-test:

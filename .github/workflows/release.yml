@@ -22,12 +22,15 @@ jobs:
 
           bundle_dir="flow-${GITHUB_REF_NAME}-minimal"
           echo "BUNDLE_DIR=${bundle_dir}" >> "$GITHUB_ENV"
+          echo "ARTIFACT_ZIP=${bundle_dir}.zip" >> "$GITHUB_ENV"
+          echo "ARTIFACT_SUMS=SHA256SUMS" >> "$GITHUB_ENV"
 
           mkdir -p "${bundle_dir}/SPECS"
           cp install.sh "${bundle_dir}/install.sh"
           cp -r SPECS/COMMANDS "${bundle_dir}/SPECS/COMMANDS"
 
           zip -r "${bundle_dir}.zip" "${bundle_dir}"
+          sha256sum "${bundle_dir}.zip" > SHA256SUMS
 
       - name: Create or update GitHub Release
         env:
@@ -35,13 +38,13 @@ jobs:
         run: |
           set -euo pipefail
 
-          artifact="${BUNDLE_DIR}.zip"
-
           if gh release view "${GITHUB_REF_NAME}" > /dev/null 2>&1; then
-            gh release upload "${GITHUB_REF_NAME}" "${artifact}" --clobber
+            gh release upload "${GITHUB_REF_NAME}" "${ARTIFACT_ZIP}" --clobber
+            gh release upload "${GITHUB_REF_NAME}" "${ARTIFACT_SUMS}" --clobber
           else
             gh release create "${GITHUB_REF_NAME}" \
               --title "Flow ${GITHUB_REF_NAME}" \
               --generate-notes \
-              "${artifact}"
+              "${ARTIFACT_ZIP}" \
+              "${ARTIFACT_SUMS}"
           fi
