@@ -10,7 +10,7 @@ Each command in Flow is a prompt that guides AI agents through a structured work
 
 - **Method over implementation**: Flow defines the process, not the code
 - **Linear execution**: Step-by-step workflow without skipping phases
-- **Source of Truth**: `SPECS/COMMANDS/Workplan.md` is the single source of truth for all tasks
+- **Source of Truth**: `SPECS/Workplan.md` is the single source of truth for all tasks
 - **Current state tracking**: Active tasks are temporarily placed in the `SPECS/INPROGRESS/` folder with `next.md` logging the current task
 
 ## Project Structure
@@ -26,7 +26,7 @@ Flow/
 ### Key Directories (Referenced by Workflow)
 
 - `SPECS/COMMANDS/` - Workflow command definitions (FLOW.md, SELECT.md, PLAN.md, etc.)
-- `SPECS/PRD/` - Product requirements and workplans
+- `SPECS/Workplan.md` - Product roadmap and task queue
 - `SPECS/INPROGRESS/` - Currently active task artifacts
 - `SPECS/ARCHIVE/` - Completed task archives
 
@@ -38,18 +38,16 @@ Flow/
 
 ## Workflow Commands
 
-The Flow workflow consists of 10 main commands executed in sequence:
+The Flow workflow consists of 8 main commands executed in sequence:
 
-1. **SELECT** - Choose the next task from the workplan
-2. **BRANCH** - Create feature branch for the task
+1. **BRANCH** - Create feature branch for the task
+2. **SELECT** - Choose the next task from the workplan
 3. **PLAN** - Create task PRD with deliverables and acceptance criteria
 4. **EXECUTE** - Implement the task according to PRD
 5. **ARCHIVE** - Move completed task artifacts to archive
 6. **REVIEW** - Review the implementation
 7. **FOLLOW-UP** - Address review findings (if any)
 8. **ARCHIVE-REVIEW** - Archive review reports
-9. **PR** - Create pull request
-10. **CI-REVIEW** - CI validation review
 
 These are grouped under the **FLOW** meta-command which serves as the entry point.
 
