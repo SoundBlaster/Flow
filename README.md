@@ -20,34 +20,46 @@ SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → FOLLOW-UP → ARCHIVE-REV
 - **Linear execution** — Step-by-step workflow without skipping phases
 - **Documentation-driven** — PRDs and specs are first-class artifacts
 - **Source of Truth** — `SPECS/Workplan.md` tracks all tasks
-- **Language-agnostic** — Works with any tech stack via templates
+- **Language-agnostic** — Works with any tech stack via `.flow/params.yaml`
 
 ## Quick Start
 
-### 1. Copy Flow to Your Project
+### 1. Install Flow
 
 ```bash
-# Copy the SPECS folder to your project
-cp -r /path/to/Flow/SPECS ./SPECS
+# Clone Flow, then run the installer pointing at your repo
+./install.sh /path/to/your/repo
+
+# Or from inside your repo
+/path/to/flow/install.sh
 ```
+
+The installer copies `SPECS/COMMANDS/` and creates `SPECS/Workplan.md`, `SPECS/ARCHIVE/INDEX.md`, and `SPECS/INPROGRESS/next.md` from templates — skipping any that already exist.
 
 ### 2. Configure for Your Project
 
 ```bash
-# Read the setup guide
-cat SPECS/COMMANDS/SETUP.md
-
-# Edit templates to match your project
-edit SPECS/TEMPLATES/QualityGates.md    # Your test/lint commands
-edit SPECS/TEMPLATES/ProjectInfo.md     # Project name & stack
-edit SPECS/TEMPLATES/NFRs.md            # Performance budgets (optional)
+# Create and fill in your project config
+mkdir -p .flow
+# See SPECS/COMMANDS/SETUP.md for the full template
 ```
 
-### 3. Create Your Workplan
+```yaml
+# .flow/params.yaml
+project:
+  name: MyProject
+  default_branch: main
+
+verify:
+  tests: npm test
+  lint: npm run lint
+  coverage_threshold: 80
+```
+
+### 3. Add Your Tasks
 
 ```bash
-# Customize the workplan with your tasks
-edit SPECS/Workplan.md
+edit SPECS/Workplan.md    # Replace example tasks with yours
 ```
 
 ### 4. Run the Workflow
@@ -63,53 +75,60 @@ Follow the steps in `SPECS/COMMANDS/FLOW.md`:
 ## Structure
 
 ```
+.flow/
+└── params.yaml                  # Your project config (survives Flow updates)
+
 SPECS/
-├── COMMANDS/              # Workflow prompts (read-only)
-│   ├── FLOW.md            # Main workflow
-│   ├── SETUP.md           # Configuration guide
-│   ├── SELECT.md          # Task selection
-│   ├── PLAN.md            # Task planning
-│   ├── EXECUTE.md         # Implementation
-│   ├── ARCHIVE.md         # Task archival
-│   ├── REVIEW.md          # Code review
-│   └── PRIMITIVES/        # Helper commands
-├── TEMPLATES/             # 🎨 Your project config (edit these)
-│   ├── QualityGates.md    # Test, lint, coverage commands
-│   ├── ProjectInfo.md     # Project metadata
-│   ├── NFRs.md            # Performance budgets
-│   └── Structure.md       # Directory layout
-├── Workplan.md            # Your task tracker (edit this)
-├── INPROGRESS/            # Active task artifacts
-└── ARCHIVE/               # Completed task artifacts
+├── Workplan.md                  # Your task tracker        ← user data
+├── ARCHIVE/                     # Completed PRDs           ← user data
+│   ├── INDEX.md
+│   └── {TASK_ID}_{TASK_NAME}/
+│       ├── {TASK_ID}_{TASK_NAME}.md
+│       └── {TASK_ID}_Validation_Report.md
+├── INPROGRESS/                  # Active tasks             ← user data
+│   ├── next.md
+│   └── {TASK_ID}_{TASK_NAME}.md
+└── COMMANDS/                    # ← update Flow by replacing this folder
+    ├── FLOW.md                  # Main workflow reference
+    ├── SETUP.md                 # Configuration guide
+    ├── SELECT.md                # Task selection
+    ├── PLAN.md                  # Task planning
+    ├── EXECUTE.md               # Implementation
+    ├── ARCHIVE.md               # Task archival
+    ├── REVIEW.md                # Code review
+    ├── Workplan_Example.md      # Template → SPECS/Workplan.md
+    ├── Archive_Index_Example.md # Template → SPECS/ARCHIVE/INDEX.md
+    ├── next_example.md          # Template → SPECS/INPROGRESS/next.md
+    └── PRIMITIVES/              # Helper commands
 ```
 
-## The Template System
+## Configuration
 
-Flow uses **template files** for project-specific configuration:
+Flow reads project-specific values from `.flow/params.yaml` at the repo root:
 
-- **QualityGates.md** — Your test, lint, and coverage commands
-- **ProjectInfo.md** — Project name, language, stack
-- **NFRs.md** — Performance budgets and constraints
-- **Structure.md** — Directory layout
+| Section | Purpose | Used By |
+|---------|---------|---------|
+| `project.*` | Project name, language, default branch | all commands |
+| `verify.*` | Test, lint, format, coverage commands | EXECUTE |
+| `nfrs.*` | Performance budgets | REVIEW |
+| `structure.*` | Key directory paths | EXECUTE, ARCHIVE |
 
-Commands reference templates using `@` notation:
+Commands reference it as `[Params](.flow/params.yaml)`. See `SPECS/COMMANDS/SETUP.md` for the full template.
 
-```markdown
-<!-- In EXECUTE.md -->
-@SPECS/TEMPLATES/QualityGates.md
+## Updating Flow
+
+```bash
+# Run the installer again — only SPECS/COMMANDS/ is overwritten
+./install.sh /path/to/your/repo
+
+# Your workplan, archive, and .flow/params.yaml are never touched
 ```
-
-This means:
-- No rigid config file format to learn
-- Templates are plain Markdown
-- Easy to edit and version control
-- Commands get context automatically
 
 ## Commands
 
 | Command | Purpose |
 |---------|---------|
-| **SETUP** | Configure Flow for your project |
+| **SETUP** | Create `.flow/params.yaml` for your project |
 | SELECT | Pick the next task from the workplan |
 | PLAN | Write the implementation PRD |
 | EXECUTE | Run implementation with quality gates |
@@ -117,37 +136,17 @@ This means:
 | REVIEW | Structured code review |
 | FOLLOW-UP | Create tasks from review findings |
 
-## Example: Quality Gates Template
-
-Your `SPECS/TEMPLATES/QualityGates.md`:
-
-```markdown
-### Testing
-```bash
-pytest -v
-```
-
-### Linting
-```bash
-ruff check src/
-```
-
-**Coverage Threshold:** 85%
-```
-
-The `EXECUTE` command reads this and runs your specific quality gates.
-
 ## Language Support
 
-Flow works with any language:
+Flow works with any language — configure your toolchain in `.flow/params.yaml` under `verify.*`:
 
-- **JavaScript/TypeScript** — npm, yarn, pnpm
-- **Python** — pytest, ruff, mypy
-- **Rust** — cargo, clippy
-- **Go** — go test, golangci-lint
-- **And more...** — Any language with CLI tools
-
-See `SPECS/CONFIG_EXAMPLE.md` for language-specific examples.
+| Language | Tests | Lint |
+|----------|-------|------|
+| JavaScript/TypeScript | `npm test` | `npm run lint` |
+| Python | `pytest` | `ruff check src/` |
+| Rust | `cargo test` | `cargo clippy` |
+| Go | `go test ./...` | `golangci-lint run` |
+| Swift | `swift test` | `swiftlint` |
 
 ## Current State Tracking
 
@@ -156,21 +155,11 @@ See `SPECS/CONFIG_EXAMPLE.md` for language-specific examples.
 - **Archive:** `SPECS/ARCHIVE/{TASK_ID}_{NAME}/`
 - **Workplan:** `SPECS/Workplan.md`
 
-## Skills (Optional)
-
-Flow can be enhanced by AI agent skills that wrap prompts into shortcuts:
-
-- `flow-run` — Run the complete workflow end-to-end
-- `flow-primitive-commit` — Create focused commits
-
-Skills live in `.agents/skills/`.
-
 ## Documentation
 
-- `SPECS/README.md` — Complete documentation
-- `SPECS/COMMANDS/SETUP.md` — Configuration guide
 - `SPECS/COMMANDS/FLOW.md` — Workflow reference
-- `SPECS/CONFIG_EXAMPLE.md` — Configuration examples
+- `SPECS/COMMANDS/SETUP.md` — Configuration guide
+- `SPECS/COMMANDS/README.md` — Commands overview
 
 ## License
 
