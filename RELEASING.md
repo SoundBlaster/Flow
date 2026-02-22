@@ -10,6 +10,16 @@ Flow uses [Semantic Versioning](https://semver.org): `MAJOR.MINOR.PATCH`
 
 The single source of truth is `SPECS/VERSION`. Each command file also carries a matching `**Version:**` header — update both when releasing. The install script copies `SPECS/VERSION` into the target repo so users can always check which version of Flow they have installed.
 
+
+## Self-Hosted Development Policy
+
+When Flow is used to develop Flow itself, keep active workflow files in-repo (single-branch model), but treat release packaging as a strict allowlist.
+
+- Shipped in release zip: `install.sh`, `SPECS/COMMANDS/**`
+- Never shipped in release zip: `SPECS/Workplan.md`, `SPECS/INPROGRESS/**`, `SPECS/ARCHIVE/**`
+
+Rationale and trade-offs are documented in `docs/Self_Hosted_Development_and_Release_Strategy.md`.
+
 ## Release Artifact
 
 A tag release includes:
