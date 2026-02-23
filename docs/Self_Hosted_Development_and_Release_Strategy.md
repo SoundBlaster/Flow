@@ -66,8 +66,10 @@ Define three categories under `SPECS/`:
 3. Document the policy in `RELEASING.md` so maintainers treat it as a contract.
 4. Optionally add a `release-manifest.txt` file used by workflow packaging to avoid logic drift.
 
-## Suggested Next Increment
+## Implementation Status
 
-1. Add `release-manifest.txt` with exact shipped paths.
-2. Update `.github/workflows/release.yml` to package by manifest.
-3. Add a CI test that inspects zip content and fails on forbidden paths.
+The recommended guardrails are now implemented:
+
+1. `release-manifest.txt` defines exact shipped paths.
+2. `.github/workflows/release.yml` builds by manifest via `scripts/build-release-bundle.sh`.
+3. Release bundle policy validation is enforced via `scripts/verify-release-bundle.sh` and covered by `make test`.

@@ -1,4 +1,4 @@
-.PHONY: all test version-check ref-check install-test minimal-bundle-test bootstrap-verify-test bootstrap-mismatch-test idempotency-test md-lint md-links lint help
+.PHONY: all test version-check ref-check install-test minimal-bundle-test release-bundle-policy-test bootstrap-verify-test bootstrap-mismatch-test idempotency-test md-lint md-links lint help
 
 COMMANDS_DIR := SPECS/COMMANDS
 VERSION      := $(shell cat SPECS/VERSION 2>/dev/null | tr -d '[:space:]')
@@ -6,7 +6,7 @@ VERSION      := $(shell cat SPECS/VERSION 2>/dev/null | tr -d '[:space:]')
 all: test
 
 ## Run all integrity checks
-test: version-check ref-check install-test minimal-bundle-test bootstrap-verify-test bootstrap-mismatch-test idempotency-test md-lint lint
+test: version-check ref-check install-test minimal-bundle-test release-bundle-policy-test bootstrap-verify-test bootstrap-mismatch-test idempotency-test md-lint lint
 	@echo ""
 	@echo "All checks passed."
 
@@ -72,30 +72,37 @@ install-test:
 	[ $$failed -eq 0 ] && echo "  ok"; \
 	exit $$failed
 
-## Test install.sh works from a minimal bundle (install.sh + SPECS/COMMANDS only)
+## Test install.sh works from a generated minimal release bundle
 minimal-bundle-test:
 	@echo "==> minimal-bundle-test"
-	@src=$$(mktemp -d); \
-	dst=$$(mktemp -d); \
-	trap "rm -rf $$src $$dst" EXIT; \
-	mkdir -p "$$src/SPECS"; \
-	cp install.sh "$$src/install.sh"; \
-	cp -r SPECS/COMMANDS "$$src/SPECS/COMMANDS"; \
-	chmod +x "$$src/install.sh"; \
-	"$$src/install.sh" "$$dst" > /dev/null; \
+	@bundle_root=$$(mktemp -d); \
+	target_root=$$(mktemp -d); \
+	trap "rm -rf $$bundle_root $$target_root" EXIT; \
+	./scripts/build-release-bundle.sh "v-test" "$$bundle_root" > /dev/null; \
+	unzip -oq "$$bundle_root/flow-v-test-minimal.zip" -d "$$bundle_root"; \
+	bash "$$bundle_root/flow-v-test-minimal/install.sh" "$$target_root" > /dev/null; \
 	failed=0; \
 	for f in \
-		"$$dst/SPECS/VERSION" \
-		"$$dst/SPECS/COMMANDS/FLOW.md" \
-		"$$dst/SPECS/Workplan.md" \
-		"$$dst/SPECS/ARCHIVE/INDEX.md" \
-		"$$dst/SPECS/INPROGRESS/next.md"; do \
+		"$$target_root/SPECS/VERSION" \
+		"$$target_root/SPECS/COMMANDS/FLOW.md" \
+		"$$target_root/SPECS/Workplan.md" \
+		"$$target_root/SPECS/ARCHIVE/INDEX.md" \
+		"$$target_root/SPECS/INPROGRESS/next.md"; do \
 		if [ ! -f "$$f" ]; then \
 			echo "  FAIL missing: $$f"; failed=1; \
 		fi; \
 	done; \
 	[ $$failed -eq 0 ] && echo "  ok"; \
 	exit $$failed
+
+## Verify release bundle excludes workspace files and includes required artifacts
+release-bundle-policy-test:
+	@echo "==> release-bundle-policy-test"
+	@tmp=$$(mktemp -d); \
+	trap "rm -rf $$tmp" EXIT; \
+	./scripts/build-release-bundle.sh "v-test" "$$tmp" > /dev/null; \
+	./scripts/verify-release-bundle.sh "$$tmp/flow-v-test-minimal.zip" > /dev/null; \
+	echo "  ok"
 
 ## Test docs/flow-bootstrap.sh with local release assets and SHA256 verification
 bootstrap-verify-test:
@@ -106,10 +113,7 @@ bootstrap-verify-test:
 	trap "rm -rf $$release_root $$target_root $$src" EXIT; \
 	version="v-test"; \
 	artifact="flow-$${version}-minimal.zip"; \
-	mkdir -p "$$src/flow-$${version}-minimal/SPECS"; \
-	cp install.sh "$$src/flow-$${version}-minimal/install.sh"; \
-	cp -r SPECS/COMMANDS "$$src/flow-$${version}-minimal/SPECS/COMMANDS"; \
-	( cd "$$src" && zip -rq "$$artifact" "flow-$${version}-minimal" ); \
+	./scripts/build-release-bundle.sh "$$version" "$$src" > /dev/null; \
 	mkdir -p "$$release_root/$${version}"; \
 	mv "$$src/$$artifact" "$$release_root/$${version}/$$artifact"; \
 	if command -v sha256sum >/dev/null 2>&1; then \
@@ -141,10 +145,7 @@ bootstrap-mismatch-test:
 	trap "rm -rf $$release_root $$target_root $$src" EXIT; \
 	version="v-test"; \
 	artifact="flow-$${version}-minimal.zip"; \
-	mkdir -p "$$src/flow-$${version}-minimal/SPECS"; \
-	cp install.sh "$$src/flow-$${version}-minimal/install.sh"; \
-	cp -r SPECS/COMMANDS "$$src/flow-$${version}-minimal/SPECS/COMMANDS"; \
-	( cd "$$src" && zip -rq "$$artifact" "flow-$${version}-minimal" ); \
+	./scripts/build-release-bundle.sh "$$version" "$$src" > /dev/null; \
 	mkdir -p "$$release_root/$${version}"; \
 	mv "$$src/$$artifact" "$$release_root/$${version}/$$artifact"; \
 	echo "deadbeef  $$artifact" > "$$release_root/$${version}/SHA256SUMS"; \

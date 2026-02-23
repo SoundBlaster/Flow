@@ -15,7 +15,7 @@ The single source of truth is `SPECS/VERSION`. Each command file also carries a 
 
 When Flow is used to develop Flow itself, keep active workflow files in-repo (single-branch model), but treat release packaging as a strict allowlist.
 
-- Shipped in release zip: `install.sh`, `SPECS/COMMANDS/**`
+- Shipped in release zip (via `release-manifest.txt`): `install.sh`, `SPECS/VERSION`, `SPECS/COMMANDS/**`
 - Never shipped in release zip: `SPECS/Workplan.md`, `SPECS/INPROGRESS/**`, `SPECS/ARCHIVE/**`
 
 Rationale and trade-offs are documented in `docs/Self_Hosted_Development_and_Release_Strategy.md`.
@@ -34,10 +34,11 @@ SHA256SUMS (uploaded by workflow)
 
 ```
 install.sh
+SPECS/VERSION
 SPECS/COMMANDS/
 ```
 
-The installer supports this minimal bundle and generates fallback `SPECS/VERSION` and starter user files when template files are not present.
+The installer supports this minimal bundle and generates starter user files when template files are not present.
 
 `SHA256SUMS` uses standard `sha256sum` output format and includes a checksum entry for `flow-v{VERSION}-minimal.zip`.
 
@@ -66,7 +67,8 @@ git push origin v{VERSION}
 
 On push of `v*` tags, `.github/workflows/release.yml` will:
 
-- Create `flow-v{VERSION}-minimal.zip` containing only `install.sh` and `SPECS/COMMANDS/`
+- Build bundle strictly from `release-manifest.txt` using `scripts/build-release-bundle.sh`
+- Verify policy constraints (required + forbidden paths) with `scripts/verify-release-bundle.sh`
 - Generate `SHA256SUMS` for release assets
 - Create the GitHub Release automatically (or update assets if the release already exists)
 - Upload both artifacts to the release (`flow-v{VERSION}-minimal.zip`, `SHA256SUMS`)
