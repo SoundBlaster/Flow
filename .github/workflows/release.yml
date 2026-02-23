@@ -20,17 +20,14 @@ jobs:
         run: |
           set -euo pipefail
 
-          bundle_dir="flow-${GITHUB_REF_NAME}-minimal"
-          echo "BUNDLE_DIR=${bundle_dir}" >> "$GITHUB_ENV"
-          echo "ARTIFACT_ZIP=${bundle_dir}.zip" >> "$GITHUB_ENV"
-          echo "ARTIFACT_SUMS=SHA256SUMS" >> "$GITHUB_ENV"
+          output="$(./scripts/build-release-bundle.sh "${GITHUB_REF_NAME}" ".")"
+          echo "$output"
+          echo "$output" >> "$GITHUB_ENV"
 
-          mkdir -p "${bundle_dir}/SPECS"
-          cp install.sh "${bundle_dir}/install.sh"
-          cp -r SPECS/COMMANDS "${bundle_dir}/SPECS/COMMANDS"
-
-          zip -r "${bundle_dir}.zip" "${bundle_dir}"
-          sha256sum "${bundle_dir}.zip" > SHA256SUMS
+      - name: Verify release bundle policy
+        run: |
+          set -euo pipefail
+          ./scripts/verify-release-bundle.sh "${ARTIFACT_ZIP}"
 
       - name: Create or update GitHub Release
         env:
