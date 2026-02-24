@@ -6,13 +6,14 @@
 
 ## Phase 1 — Task System Parameters (portable config)
 
-#### ⬜️ P1-T1: Add `task_system` section to `.flow/params.yaml`
-- **Description:** Define a repo-configurable abstraction for task tracking (GitHub/Jira/Linear/none) without any API execution. This is the canonical contract the method relies on.
+#### ⬜️ P1-T1: Add `task_system` + tracker skill reference to `.flow/params.yaml`
+- **Description:** Define a repo-configurable abstraction for task tracking (GitHub/Jira/Linear/none) without any API execution, and include a generic skill reference that points to the prompt/skill agents must follow to use the user’s tracking system. This becomes the canonical method contract.
 - **Priority:** P0
 - **Dependencies:** none
 - **Parallelizable:** no
 - **Outputs/Artifacts:**
   - `.flow/params.yaml` (new `task_system` section)
+  - `.flow/params.yaml` includes tracker skill locator (e.g., `task_system.skill_ref.name` or `task_system.skill_ref.path`)
   - `SPECS/COMMANDS/*` references updated (if they mention task fields explicitly)
 - **Acceptance Criteria:**
   - [ ] `.flow/params.yaml` includes `task_system.kind` (`github|jira|linear|none`)
@@ -20,6 +21,8 @@
   - [ ] `task_system.link_templates` exists for task links (e.g., `task_url`, optional `board_url`)
   - [ ] `task_system.required_fields` exists (list of required fields at SELECT/PLAN)
   - [ ] `task_system.states` mapping exists (Flow steps → task states)
+  - [ ] `task_system.skill_ref` supports a generic skill identifier by `name` or `path`
+  - [ ] Referenced skill/prompt explicitly instructs agents how to operate the user’s tracking system in a tool-agnostic way
 
 #### ⬜️ P1-T2: Define canonical Task Reference block format for artifacts
 - **Description:** Standardize how TaskID/TaskURL/Title/Source appear in Workplan/Archive so every Flow run is attached to a “unit of value.”
