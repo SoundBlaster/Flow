@@ -1,0 +1,13 @@
+# .flow/params.yaml
+# Project-specific config for Flow self-development.
+
+project:
+  name: Flow
+  description: Documentation-driven workflow framework implemented as Markdown specs and shell tooling
+  language: Markdown/Bash
+  package_manager: make
+  default_branch: main
+
+verify:
+  tests: make test
+  lint: make lint
