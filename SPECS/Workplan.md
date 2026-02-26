@@ -20,84 +20,83 @@
   - [ ] Command docs clearly state which task metadata is sourced from Skill guidance vs params
   - [ ] Schema/validation documents which `task_system` keys are required vs optional
 
-#### ⬜️ P1-T2: Define canonical Task Reference block format for artifacts
-- **Description:** Standardize how TaskID/TaskURL/Title/Source appear in Workplan/Archive so every Flow run is attached to a “unit of value.”
+#### ⬜️ P1-T2: Define canonical TaskID types + runtime I/O contract
+- **Description:** Define abstract TaskID categories and the normalized task-reference I/O that runtime commands consume/produce, independent of any specific task tool.
 - **Priority:** P0
 - **Dependencies:** P1-T1
 - **Parallelizable:** yes
 - **Outputs/Artifacts:**
-  - `SPECS/Workplan.md` template section (documented snippet)
-  - `SPECS/Archive.md` (or archive template) Task Reference section
-  - `SPECS/COMMANDS/SELECT.md`, `SPECS/COMMANDS/PLAN.md`, `SPECS/COMMANDS/ARCHIVE.md` updates (if present)
+  - `SPECS/Workplan.md` section describing TaskID type families (e.g., numeric, prefixed, slug/hybrid)
+  - Canonical Task Reference input/output contract for SELECT/PLAN/ARCHIVE
+  - `SPECS/COMMANDS/SELECT.md`, `SPECS/COMMANDS/PLAN.md`, `SPECS/COMMANDS/ARCHIVE.md` updated to use the abstract contract
 - **Acceptance Criteria:**
-  - [ ] Task Reference block includes `TaskID`, `TaskURL`, `Title`, `Source`
-  - [ ] TaskURL is described as derived from `task_system.link_templates`
-  - [ ] SELECT requires Task Reference to be filled before proceeding to PLAN
-  - [ ] ARCHIVE requires backlinks (TaskID + PR/commit link placeholders)
+  - [ ] Common TaskID type families are documented with examples
+  - [ ] Runtime contract defines required inputs (`TaskID`, `Title`, `Source`) and outputs (`TaskRef`, archive backlink placeholders)
+  - [ ] SELECT/PLAN/ARCHIVE explicitly consume/emit the same normalized task reference fields
+  - [ ] Commands remain compatible with task-management Skills at runtime without hardcoding one tool
 
 ---
 
-## Phase 2 — Skills: Task Discipline as Method (not tools)
+## Phase 2 — Runtime Task Interop (tool/skill agnostic)
 
-#### ⬜️ P2-T1: Create `skill.task.linkage` (Issue ↔ PR ↔ Workplan ↔ Archive)
-- **Description:** Add a Skill doc that defines how to link tasks to PRs/commits and Flow artifacts. This is the heart of portability across trackers.
+#### ⬜️ P2-T1: Define task-management adapter contract for runtime commands
+- **Description:** Specify a tool-agnostic adapter contract that any task-management implementation (manual process, script, or Skill) can satisfy at runtime.
 - **Priority:** P0
 - **Dependencies:** P1-T2
 - **Parallelizable:** yes
 - **Outputs/Artifacts:**
-  - `SPECS/SKILLS/skill.task.linkage.md` (or `.flow/skills/skill.task.linkage.md`)
+  - Adapter contract doc (inputs/outputs for pick/select/plan/archive operations)
   - References from relevant commands (SELECT/PLAN/EXECUTE/ARCHIVE)
 - **Acceptance Criteria:**
-  - [ ] Skill document includes: Purpose, When to use, Steps, Anti-patterns, Evidence
-  - [ ] Evidence requires TaskID in PR title/body (or documented alternative)
-  - [ ] Evidence requires Task Reference present in Workplan and Archive
-  - [ ] Defines backlinks: PR ↔ TaskURL, Archive ↔ PR/commit
+  - [ ] Contract defines required runtime operations and normalized return fields
+  - [ ] Contract explicitly permits multiple implementations (tool CLI, API wrapper, Skill, or manual)
+  - [ ] Evidence requirements are expressed in artifact terms (Workplan/Archive links), not vendor-specific actions
 
-#### ⬜️ P2-T2: Create `skill.task.status` (state transitions aligned to Flow)
-- **Description:** Add a Skill doc describing how task status changes across Flow steps, mapped via params.
+#### ⬜️ P2-T2: Define task state transition abstraction aligned to Flow steps
+- **Description:** Describe state transition intent across Flow phases without binding to tracker-specific state names.
 - **Priority:** P1
 - **Dependencies:** P1-T1
 - **Parallelizable:** yes
 - **Outputs/Artifacts:**
-  - `SPECS/SKILLS/skill.task.status.md` (or `.flow/skills/skill.task.status.md`)
+  - State transition mapping spec tied to Flow steps
 - **Acceptance Criteria:**
-  - [ ] Skill defines transitions for SELECT → PLAN → EXECUTE → REVIEW → ARCHIVE
-  - [ ] Uses `task_system.states` mapping (no hardcoded tracker states)
-  - [ ] Evidence includes “status updated” note in Archive (even if manual)
+  - [ ] Transitions are defined for SELECT → PLAN → EXECUTE → REVIEW → ARCHIVE
+  - [ ] Mapping uses abstract lifecycle states and allows implementation-level translation
+  - [ ] Archive evidence includes a recorded status-change note (manual or automated)
 
-#### ⬜️ P2-T3: Create `skill.task.capture` and `skill.task.triage` (optional but recommended)
-- **Description:** Provide guidance for creating a good task (minimal required fields) and triaging (priority/scope/owner).
+#### ⬜️ P2-T3: Define task capture + triage minimum contract (optional but recommended)
+- **Description:** Provide a minimal, implementation-agnostic contract for creating and triaging tasks (priority/scope/owner).
 - **Priority:** P2
 - **Dependencies:** P1-T1
 - **Parallelizable:** yes
 - **Outputs/Artifacts:**
-  - `SPECS/SKILLS/skill.task.capture.md`
-  - `SPECS/SKILLS/skill.task.triage.md`
+  - Capture contract doc (minimum fields and validation)
+  - Triage contract doc (priority rubric and sizing guidance)
 - **Acceptance Criteria:**
-  - [ ] Capture skill references `task_system.required_fields`
-  - [ ] Triage skill defines criteria for P0–P3 and scope sizing (small diff guidance)
-  - [ ] Both include Evidence sections that are checkable in Workplan
+  - [ ] Capture contract references the minimal required task metadata from params
+  - [ ] Triage contract defines P0–P3 criteria and small-diff guidance
+  - [ ] Both contracts define evidence that is checkable in Workplan artifacts
 
 ---
 
-## Phase 3 — Flow Blueprint (FLOW.md) integration
+## Phase 3 — Flow Blueprint (FLOW.md) Runtime Integration
 
-#### ⬜️ P3-T1: Update `FLOW.md` to include explicit “Task checkpoints”
-- **Description:** Treat `FLOW.md` as the blueprint and add explicit gates for task reference, linkage, and status updates.
+#### ⬜️ P3-T1: Update `FLOW.md` with runtime task checkpoints
+- **Description:** Treat `FLOW.md` as the runtime blueprint and add explicit gates for normalized task references, linkage evidence, and status recording.
 - **Priority:** P0
 - **Dependencies:** P1-T2, P2-T1
 - **Parallelizable:** no
 - **Outputs/Artifacts:**
   - `FLOW.md` (updated checkpoints)
 - **Acceptance Criteria:**
-  - [ ] SELECT step includes “Task Reference required” gate
-  - [ ] PLAN step includes “required_fields satisfied” gate
-  - [ ] EXECUTE includes “PR/commit must include TaskID” guidance (via linkage skill)
-  - [ ] ARCHIVE includes “backlinks + status update recorded” gate
-  - [ ] `FLOW.md` references the relevant Skills by name
+  - [ ] SELECT step includes “normalized Task Reference required” gate
+  - [ ] PLAN step includes “minimum task metadata present” gate
+  - [ ] EXECUTE includes “PR/commit carries TaskID” guidance without requiring a specific integration method
+  - [ ] ARCHIVE includes “backlinks + status-update note recorded” gate
+  - [ ] `FLOW.md` references the adapter/interop contract rather than a single tool
 
-#### ⬜️ P3-T2: Update command docs to reference Skills (not tools)
-- **Description:** Ensure each relevant command lists required Skills and required Evidence outputs.
+#### ⬜️ P3-T2: Update command docs to consume abstract runtime contracts
+- **Description:** Ensure each relevant command declares normalized inputs/outputs, evidence checklists, and optional runtime integration mechanisms.
 - **Priority:** P1
 - **Dependencies:** P2-T1, P2-T2
 - **Parallelizable:** yes
@@ -107,9 +106,9 @@
   - `SPECS/COMMANDS/EXECUTE.md` (if exists)
   - `SPECS/COMMANDS/ARCHIVE.md`
 - **Acceptance Criteria:**
-  - [ ] Each updated command has a “Required Skills” section
-  - [ ] Each updated command has “Outputs/Artifacts” and “Evidence” checklists
-  - [ ] No command implies automated execution; all actions are method steps
+  - [ ] Each updated command has an “Inputs/Outputs” section using normalized task fields
+  - [ ] Each updated command has “Evidence” checklists tied to Workplan/Archive artifacts
+  - [ ] Commands may call a runtime Skill/adapter but do not assume one vendor/tool implementation
 
 ---
 
