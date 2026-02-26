@@ -40,6 +40,11 @@ verify:
   coverage: npm run test:coverage
   coverage_threshold: 80        # percent
 
+task_system:
+  kind: github                  # required: github | jira | linear | none
+  project_key: PROJ             # optional lightweight scope key
+  task_url_template: "https://github.com/org/repo/issues/{id}"  # optional
+
 # Optional: performance budgets checked during REVIEW
 nfrs:
   api_response_ms: 200
@@ -68,6 +73,9 @@ structure:
 | `verify.typecheck` | no | EXECUTE |
 | `verify.coverage` | no | EXECUTE |
 | `verify.coverage_threshold` | no | EXECUTE, REVIEW |
+| `task_system.kind` | yes | SELECT, PLAN, ARCHIVE |
+| `task_system.project_key` | no | SELECT, PLAN |
+| `task_system.task_url_template` | no | SELECT, ARCHIVE |
 | `nfrs.*` | no | REVIEW |
 | `structure.*` | no | EXECUTE, ARCHIVE |
 | `github.pr_template` | no | REVIEW |
@@ -187,3 +195,8 @@ After SETUP completes:
 3. Run `SELECT` to choose a task
 4. Run `PLAN` to create the PRD
 5. Run `EXECUTE` to implement
+
+
+## Task System Contract
+
+`task_system` is intentionally lightweight. It stores only static metadata and link templates. Tool-specific behavior (how tasks are selected, transitioned, or synchronized) should be implemented by runtime Skills/adapters, not encoded directly in `params.yaml`.

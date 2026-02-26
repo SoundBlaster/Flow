@@ -11,3 +11,8 @@ project:
 verify:
   tests: make test
   lint: make lint
+
+task_system:
+  kind: github              # github | jira | linear | none
+  project_key: Flow         # optional lightweight scope key
+  task_url_template: "https://github.com/example/repo/issues/{id}"  # optional
