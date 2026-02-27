@@ -10,7 +10,7 @@ Choose the next task from the workplan without re-planning. SELECT keeps the "cu
 
 - `SPECS/Workplan.md` as the main tasks tracker (phases, priorities, status).
 - `SPECS/INPROGRESS/next.md` (if it exists) to note what is already active.
-- [Params](.flow/params.yaml) — read `task_system.kind` and optional linkage defaults for task references.
+- [Params](.flow/params.yaml) — read `task_system.kind` and optional linkage defaults for task references (for `kind: file`, use `task_url_template` markdown anchors containing task id/name placeholders).
 - `AGENTS.md` (optional) — agent-specific constraints, if present in the repo.
 
 ## Algorithm

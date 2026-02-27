@@ -41,9 +41,9 @@ verify:
   coverage_threshold: 80        # percent
 
 task_system:
-  kind: github                  # required: github | jira | linear | none
+  kind: file                    # required: file | github | jira | linear | none
   project_key: PROJ             # optional lightweight scope key
-  task_url_template: "https://github.com/org/repo/issues/{id}"  # optional
+  task_url_template: "SPECS/Workplan.md#{task_id}-{task_name_slug}"  # optional markdown anchor template
 
 # Optional: performance budgets checked during REVIEW
 nfrs:
@@ -199,4 +199,4 @@ After SETUP completes:
 
 ## Task System Contract
 
-`task_system` is intentionally lightweight. It stores only static metadata and link templates. Tool-specific behavior (how tasks are selected, transitioned, or synchronized) should be implemented by runtime Skills/adapters, not encoded directly in `params.yaml`.
+`task_system` is intentionally lightweight. It stores only static metadata and link templates. Tool-specific behavior (how tasks are selected, transitioned, or synchronized) should be implemented by runtime Skills/adapters, not encoded directly in `params.yaml`. For `kind: file`, set `task_url_template` to a markdown anchor pattern that includes task identifiers/names (for example: `SPECS/Workplan.md#{task_id}-{task_name_slug}`).

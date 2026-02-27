@@ -178,7 +178,7 @@ mkdir -p .flow
 |---------|---------|---------|
 | `project.*` | Project name, language, default branch | all commands |
 | `verify.*` | Test, lint, format, coverage commands | EXECUTE |
-| `task_system.*` | Task tracker abstraction (`kind`, lightweight linkage defaults) | SELECT, PLAN, ARCHIVE |
+| `task_system.*` | Task tracker abstraction (`kind`: `file\|github\|jira\|linear\|none`, lightweight linkage defaults) | SELECT, PLAN, ARCHIVE |
 | `nfrs.*` | Performance budgets | REVIEW |
 | `structure.*` | Key directory paths | EXECUTE, ARCHIVE |
 
