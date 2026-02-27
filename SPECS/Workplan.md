@@ -6,7 +6,7 @@
 
 ## Phase 1 — Task System Parameters (portable config)
 
-#### ⬜️ P1-T1: Add `task_system` section to `.flow/params.yaml`
+#### ✅ P1-T1: Add `task_system` section to `.flow/params.yaml`
 - **Description:** Define a repo-configurable abstraction for task tracking (GitHub/Jira/Linear/none) without any API execution. This is the canonical contract the method relies on.
 - **Priority:** P0
 - **Dependencies:** none

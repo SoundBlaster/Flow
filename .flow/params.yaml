@@ -11,3 +11,8 @@ project:
 verify:
   tests: make test
   lint: make lint
+
+task_system:
+  kind: file                # file | github | jira | linear | none
+  project_key: Flow         # optional lightweight scope key
+  task_url_template: "SPECS/Workplan.md#p1-t1-add-task_system-section-to-flow-paramsyaml"  # optional markdown anchor template
