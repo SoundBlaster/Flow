@@ -34,7 +34,7 @@ BRANCH → SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → FOLLOW-UP → 
 /path/to/flow/install.sh
 ```
 
-The installer copies `SPECS/COMMANDS/` and creates `SPECS/Workplan.md`, `SPECS/ARCHIVE/INDEX.md`, and `SPECS/INPROGRESS/next.md` from templates — skipping any that already exist.
+The installer copies the `SPECS/COMMANDS/` and `SPECS/ROLES/` folders managed by Flow, then creates `SPECS/Workplan.md`, `SPECS/ARCHIVE/INDEX.md`, and `SPECS/INPROGRESS/next.md` from templates — skipping any user-owned files that already exist.
 
 ### Production Default: Pinned + Verified Bootstrap
 
@@ -116,20 +116,26 @@ SPECS/
 ├── INPROGRESS/                  # Active tasks             ← user data
 │   ├── next.md
 │   └── {TASK_ID}_{TASK_NAME}.md
-└── COMMANDS/                    # ← update Flow by replacing this folder
+├── COMMANDS/                    # ← managed by Flow, updated by installs
+│   ├── FLOW.md
+│   ├── SETUP.md
+│   ├── SELECT.md
+│   ├── PLAN.md
+│   ├── EXECUTE.md
+│   ├── ARCHIVE.md
+│   ├── REVIEW.md
+│   └── PRIMITIVES/
+└── ROLES/                       # ← role prompts managed by Flow
+    ├── Architect.md
+    ├── Plan.md
+    ├── Mentor.md
+    ├── TDD_Executor.md
+    └── TDD_Executor_xml.md
 
 templates/                           # Install-time scaffolding (not copied to user repos)
 ├── Workplan_Example.md          # → SPECS/Workplan.md on first install
 ├── Archive_Index_Example.md     # → SPECS/ARCHIVE/INDEX.md on first install
 └── next_example.md              # → SPECS/INPROGRESS/next.md on first install
-    ├── FLOW.md                  # Main workflow reference
-    ├── SETUP.md                 # Configuration guide
-    ├── SELECT.md                # Task selection
-    ├── PLAN.md                  # Task planning
-    ├── EXECUTE.md               # Implementation
-    ├── ARCHIVE.md               # Task archival
-    ├── REVIEW.md                # Code review
-    └── PRIMITIVES/              # Helper commands
 ```
 
 ## Configuration
@@ -148,10 +154,10 @@ Commands reference it as `[Params](.flow/params.yaml)`. See `SPECS/COMMANDS/SETU
 ## Updating Flow
 
 ```bash
-# Run the installer again — only SPECS/COMMANDS/ is overwritten
+# Run the installer again — Flow-managed SPECS folders are refreshed
 ./install.sh /path/to/your/repo
 
-# Your workplan, archive, and .flow/params.yaml are never touched
+# SPECS/COMMANDS/ and SPECS/ROLES/ are updated; your workplan, archive, and .flow/params.yaml are never touched
 ```
 
 ## Security Notes

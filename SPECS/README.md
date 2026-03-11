@@ -8,27 +8,28 @@ This folder contains the versioned specification bundle that `install.sh` copies
 SPECS/
 ├── README.md                # This file
 ├── VERSION                  # Current Flow version
-└── COMMANDS/                # Workflow command specs
-    ├── README.md
-    ├── FLOW.md
-    ├── SETUP.md
-    ├── SELECT.md
-    ├── PLAN.md
-    ├── EXECUTE.md
-    ├── ARCHIVE.md
-    ├── REVIEW.md
-    ├── PROGRESS.md
-    └── PRIMITIVES/
-        ├── COMMIT.md
-        ├── ARCHIVE_TASK.md
-        ├── FOLLOW_UP.md
-        ├── DOCS.md
-        └── REFACTORING.md
+├── COMMANDS/                # Workflow command specs
+│   ├── README.md
+│   ├── FLOW.md
+│   ├── SETUP.md
+│   ├── SELECT.md
+│   ├── PLAN.md
+│   ├── EXECUTE.md
+│   ├── ARCHIVE.md
+│   ├── REVIEW.md
+│   ├── PROGRESS.md
+│   └── PRIMITIVES/
+│       ├── COMMIT.md
+│       ├── ARCHIVE_TASK.md
+│       ├── FOLLOW_UP.md
+│       ├── DOCS.md
+│       └── REFACTORING.md
+└── ROLES/                   # Reusable role prompts shipped with Flow
 ```
 
 ## Installed Files in a Target Repo
 
-When you run `install.sh`, Flow copies `SPECS/COMMANDS/` and creates user-owned workflow files from `templates/` when missing:
+When you run `install.sh`, Flow copies the `SPECS/COMMANDS/` and `SPECS/ROLES/` folders managed by Flow, then creates user-owned workflow files from `templates/` when missing:
 
 - `SPECS/Workplan.md`
 - `SPECS/ARCHIVE/INDEX.md`

@@ -14,19 +14,30 @@ if [ ! -f "$zip_file" ]; then
 fi
 
 bundle_root="$(zipinfo -1 "$zip_file" | head -n1 | cut -d/ -f1)"
+zip_listing="$(zipinfo -1 "$zip_file")"
 
 if [ -z "$bundle_root" ]; then
   echo "ERROR: cannot determine bundle root in $zip_file" >&2
   exit 1
 fi
 
-if ! zipinfo -1 "$zip_file" | grep -qE "^${bundle_root}/install\.sh$"; then
+if ! printf '%s\n' "$zip_listing" | grep -qE "^${bundle_root}/install\.sh$"; then
   echo "ERROR: install.sh is missing from release bundle" >&2
   exit 1
 fi
 
-if ! zipinfo -1 "$zip_file" | grep -qE "^${bundle_root}/SPECS/VERSION$"; then
+if ! printf '%s\n' "$zip_listing" | grep -qE "^${bundle_root}/SPECS/VERSION$"; then
   echo "ERROR: SPECS/VERSION is missing from release bundle" >&2
+  exit 1
+fi
+
+if ! printf '%s\n' "$zip_listing" | grep -qE "^${bundle_root}/SPECS/COMMANDS/"; then
+  echo "ERROR: SPECS/COMMANDS is missing from release bundle" >&2
+  exit 1
+fi
+
+if ! printf '%s\n' "$zip_listing" | grep -qE "^${bundle_root}/SPECS/ROLES/"; then
+  echo "ERROR: SPECS/ROLES is missing from release bundle" >&2
   exit 1
 fi
 
@@ -34,7 +45,7 @@ for forbidden in \
   "${bundle_root}/SPECS/Workplan.md" \
   "${bundle_root}/SPECS/INPROGRESS/" \
   "${bundle_root}/SPECS/ARCHIVE/"; do
-  if zipinfo -1 "$zip_file" | grep -q "^${forbidden}"; then
+  if printf '%s\n' "$zip_listing" | grep -q "^${forbidden}"; then
     echo "ERROR: forbidden path present in release bundle: ${forbidden}" >&2
     exit 1
   fi

@@ -15,7 +15,7 @@ The single source of truth is `SPECS/VERSION`. Each command file also carries a 
 
 When Flow is used to develop Flow itself, keep active workflow files in-repo (single-branch model), but treat release packaging as a strict allowlist.
 
-- Shipped in release zip (via `release-manifest.txt`): `install.sh`, `SPECS/VERSION`, `SPECS/COMMANDS/**`
+- Shipped in release zip (via `release-manifest.txt`): `install.sh`, `SPECS/VERSION`, `SPECS/COMMANDS/**`, `SPECS/ROLES/**`
 - Never shipped in release zip: `SPECS/Workplan.md`, `SPECS/INPROGRESS/**`, `SPECS/ARCHIVE/**`
 
 Rationale and trade-offs are documented in `docs/Self_Hosted_Development_and_Release_Strategy.md`.
@@ -36,6 +36,7 @@ SHA256SUMS (uploaded by workflow)
 install.sh
 SPECS/VERSION
 SPECS/COMMANDS/
+SPECS/ROLES/
 ```
 
 The installer supports this minimal bundle and generates starter user files when template files are not present.
@@ -51,7 +52,7 @@ Update `SPECS/VERSION` and the `**Version:**` header in every `SPECS/COMMANDS/*.
 ### 2. Commit
 
 ```bash
-git add SPECS/VERSION SPECS/COMMANDS/
+git add SPECS/VERSION SPECS/COMMANDS/ SPECS/ROLES/
 git commit -m "Release v{VERSION}"
 ```
 
