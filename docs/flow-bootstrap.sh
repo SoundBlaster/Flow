@@ -4,7 +4,7 @@ set -euo pipefail
 # Reference bootstrap for consumer repositories.
 # Installs pinned Flow release assets after mandatory SHA256 verification.
 
-FLOW_VERSION="${FLOW_VERSION:-v1.2.0}"
+FLOW_VERSION="${FLOW_VERSION:-v1.4.0}"
 FLOW_REPO="${FLOW_REPO:-SoundBlaster/Flow}"
 TARGET_DIR="${1:-.}"
 
