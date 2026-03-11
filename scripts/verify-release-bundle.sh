@@ -30,6 +30,16 @@ if ! zipinfo -1 "$zip_file" | grep -qE "^${bundle_root}/SPECS/VERSION$"; then
   exit 1
 fi
 
+if ! zipinfo -1 "$zip_file" | grep -qE "^${bundle_root}/SPECS/COMMANDS/"; then
+  echo "ERROR: SPECS/COMMANDS is missing from release bundle" >&2
+  exit 1
+fi
+
+if ! zipinfo -1 "$zip_file" | grep -qE "^${bundle_root}/SPECS/ROLES/"; then
+  echo "ERROR: SPECS/ROLES is missing from release bundle" >&2
+  exit 1
+fi
+
 for forbidden in \
   "${bundle_root}/SPECS/Workplan.md" \
   "${bundle_root}/SPECS/INPROGRESS/" \

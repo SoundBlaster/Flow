@@ -77,19 +77,32 @@ EOF
 
 FLOW_VERSION="$(detect_version)"
 
+copy_specs_dir_required() {
+  local dir_name="$1"
+
+  if [ ! -d "$SCRIPT_DIR/SPECS/$dir_name" ]; then
+    echo "ERROR: required Flow directory is missing: SPECS/$dir_name" >&2
+    exit 1
+  fi
+
+  mkdir -p "$TARGET/SPECS/$dir_name"
+  cp -r "$SCRIPT_DIR/SPECS/$dir_name/." "$TARGET/SPECS/$dir_name/"
+  echo "✓ SPECS/$dir_name/ updated"
+}
+
 echo "Installing Flow into: $TARGET"
 echo ""
 
-# --- COMMANDS and VERSION (always updated) ---
+# --- System-owned SPECS folders (always updated) ---
 mkdir -p "$TARGET/SPECS"
-mkdir -p "$TARGET/SPECS/COMMANDS"
-cp -r "$SCRIPT_DIR/SPECS/COMMANDS/." "$TARGET/SPECS/COMMANDS/"
+copy_specs_dir_required "COMMANDS"
+copy_specs_dir_required "ROLES"
 if [ -f "$SCRIPT_DIR/SPECS/VERSION" ]; then
   cp "$SCRIPT_DIR/SPECS/VERSION" "$TARGET/SPECS/VERSION"
 else
   printf "%s\n" "$FLOW_VERSION" > "$TARGET/SPECS/VERSION"
 fi
-echo "✓ SPECS/COMMANDS/ updated ($FLOW_VERSION)"
+echo "✓ SPECS/VERSION updated ($FLOW_VERSION)"
 
 # --- User files (only created if missing) ---
 

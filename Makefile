@@ -59,6 +59,7 @@ install-test:
 		"$$tmp/SPECS/COMMANDS/ARCHIVE.md" \
 		"$$tmp/SPECS/COMMANDS/SETUP.md" \
 		"$$tmp/SPECS/COMMANDS/PRIMITIVES/COMMIT.md" \
+		"$$tmp/SPECS/ROLES/Mentor.md" \
 		"$$tmp/SPECS/Workplan.md" \
 		"$$tmp/SPECS/ARCHIVE/INDEX.md" \
 		"$$tmp/SPECS/INPROGRESS/next.md"; do \
@@ -85,6 +86,7 @@ minimal-bundle-test:
 	for f in \
 		"$$target_root/SPECS/VERSION" \
 		"$$target_root/SPECS/COMMANDS/FLOW.md" \
+		"$$target_root/SPECS/ROLES/Mentor.md" \
 		"$$target_root/SPECS/Workplan.md" \
 		"$$target_root/SPECS/ARCHIVE/INDEX.md" \
 		"$$target_root/SPECS/INPROGRESS/next.md"; do \
@@ -126,6 +128,7 @@ bootstrap-verify-test:
 	for f in \
 		"$$target_root/SPECS/VERSION" \
 		"$$target_root/SPECS/COMMANDS/FLOW.md" \
+		"$$target_root/SPECS/ROLES/Mentor.md" \
 		"$$target_root/SPECS/Workplan.md" \
 		"$$target_root/SPECS/ARCHIVE/INDEX.md" \
 		"$$target_root/SPECS/INPROGRESS/next.md"; do \
