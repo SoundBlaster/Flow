@@ -93,7 +93,7 @@ copy_specs_dir_required() {
 echo "Installing Flow into: $TARGET"
 echo ""
 
-# --- System-owned SPECS folders (always updated) ---
+# --- SPECS folders managed by Flow (always updated) ---
 mkdir -p "$TARGET/SPECS"
 copy_specs_dir_required "COMMANDS"
 copy_specs_dir_required "ROLES"

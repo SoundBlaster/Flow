@@ -47,7 +47,7 @@ SPECS/
 ├── INPROGRESS/                  # Active tasks             ← user data
 │   ├── next.md
 │   └── {TASK_ID}_{TASK_NAME}.md
-├── COMMANDS/                    # ← system-owned, refreshed by Flow installs
+├── COMMANDS/                    # ← managed by Flow, refreshed by installs
 │   ├── README.md
 │   ├── FLOW.md
 │   ├── SETUP.md
@@ -63,7 +63,7 @@ SPECS/
 │       ├── FOLLOW_UP.md
 │       ├── DOCS.md
 │       └── REFACTORING.md
-└── ROLES/                       # ← system-owned role prompts
+└── ROLES/                       # ← role prompts managed by Flow
 ```
 
 ## Quick Start
@@ -83,9 +83,9 @@ SPECS/
 /path/to/flow/install.sh
 ```
 
-The script copies the system-owned `SPECS/COMMANDS/` and `SPECS/ROLES/` folders, then creates `SPECS/Workplan.md`, `SPECS/ARCHIVE/INDEX.md`, and `SPECS/INPROGRESS/next.md` from the example templates — skipping any user-owned files that already exist.
+The script copies the `SPECS/COMMANDS/` and `SPECS/ROLES/` folders managed by Flow, then creates `SPECS/Workplan.md`, `SPECS/ARCHIVE/INDEX.md`, and `SPECS/INPROGRESS/next.md` from the example templates — skipping any user-owned files that already exist.
 
-**To update Flow later:** run `install.sh` again. It refreshes the system-owned `SPECS/COMMANDS/` and `SPECS/ROLES/` folders only — your workplan, archive, and `.flow/params.yaml` are never touched.
+**To update Flow later:** run `install.sh` again. It refreshes the `SPECS/COMMANDS/` and `SPECS/ROLES/` folders managed by Flow only — your workplan, archive, and `.flow/params.yaml` are never touched.
 
 ## First-Time Setup
 

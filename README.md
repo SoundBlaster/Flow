@@ -34,7 +34,7 @@ BRANCH → SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → FOLLOW-UP → 
 /path/to/flow/install.sh
 ```
 
-The installer copies the system-owned `SPECS/COMMANDS/` and `SPECS/ROLES/` folders, then creates `SPECS/Workplan.md`, `SPECS/ARCHIVE/INDEX.md`, and `SPECS/INPROGRESS/next.md` from templates — skipping any user-owned files that already exist.
+The installer copies the `SPECS/COMMANDS/` and `SPECS/ROLES/` folders managed by Flow, then creates `SPECS/Workplan.md`, `SPECS/ARCHIVE/INDEX.md`, and `SPECS/INPROGRESS/next.md` from templates — skipping any user-owned files that already exist.
 
 ### Production Default: Pinned + Verified Bootstrap
 
@@ -116,7 +116,7 @@ SPECS/
 ├── INPROGRESS/                  # Active tasks             ← user data
 │   ├── next.md
 │   └── {TASK_ID}_{TASK_NAME}.md
-├── COMMANDS/                    # ← system-owned, updated by Flow installs
+├── COMMANDS/                    # ← managed by Flow, updated by installs
 │   ├── FLOW.md
 │   ├── SETUP.md
 │   ├── SELECT.md
@@ -125,7 +125,7 @@ SPECS/
 │   ├── ARCHIVE.md
 │   ├── REVIEW.md
 │   └── PRIMITIVES/
-└── ROLES/                       # ← system-owned role prompts
+└── ROLES/                       # ← role prompts managed by Flow
     ├── Architect.md
     ├── Plan.md
     ├── Mentor.md
@@ -154,7 +154,7 @@ Commands reference it as `[Params](.flow/params.yaml)`. See `SPECS/COMMANDS/SETU
 ## Updating Flow
 
 ```bash
-# Run the installer again — system-owned SPECS folders are refreshed
+# Run the installer again — Flow-managed SPECS folders are refreshed
 ./install.sh /path/to/your/repo
 
 # SPECS/COMMANDS/ and SPECS/ROLES/ are updated; your workplan, archive, and .flow/params.yaml are never touched

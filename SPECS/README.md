@@ -29,7 +29,7 @@ SPECS/
 
 ## Installed Files in a Target Repo
 
-When you run `install.sh`, Flow copies the system-owned `SPECS/COMMANDS/` and `SPECS/ROLES/` folders, then creates user-owned workflow files from `templates/` when missing:
+When you run `install.sh`, Flow copies the `SPECS/COMMANDS/` and `SPECS/ROLES/` folders managed by Flow, then creates user-owned workflow files from `templates/` when missing:
 
 - `SPECS/Workplan.md`
 - `SPECS/ARCHIVE/INDEX.md`
