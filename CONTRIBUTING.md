@@ -73,12 +73,29 @@ Flow uses [Semantic Versioning](https://semver.org).
 
 | Change | Bump |
 |--------|------|
-| Wording fix, typo | none |
-| Updated command logic, new field in params | MINOR |
+| Wording fix, typo, internal-only refactor, CI-only change | none |
+| Backwards-compatible command behavior change, new field in params | MINOR |
 | New command | MINOR |
+| Backwards-compatible bug fix in shipped behavior | PATCH |
 | Breaking change to workflow or params schema | MAJOR |
 
-When bumping: update `SPECS/VERSION` and the `**Version:**` header in every file you changed. `make version-check` will catch mismatches.
+Version bumps are release signals, not PR counters. Do not bump the version just because a PR exists or merges.
+
+Bump when a change affects the shipped Flow contract or observable behavior for users:
+
+- command semantics or execution steps
+- installer/bootstrap behavior
+- params schema or validation rules
+- release artifact contents or install/update behavior
+
+Do not bump for changes that are internal-only:
+
+- wording and copy edits with no behavioral effect
+- CI/workflow plumbing
+- refactors that preserve behavior
+- test-only changes
+
+When bumping, update `SPECS/VERSION` and the `**Version:**` header in every changed shipped command file. `make version-check` will catch mismatches.
 
 ## Before Submitting
 

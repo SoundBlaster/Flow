@@ -5,7 +5,7 @@ description: "Use when a task is complete and you need to move its PRD artifacts
 
 # ARCHIVE_TASK — Move Single Completed Task to Archive
 
-**Version:** 1.3.0
+**Version:** 1.4.0
 
 ## Inputs
 

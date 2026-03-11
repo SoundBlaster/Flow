@@ -4,11 +4,27 @@
 
 Flow uses [Semantic Versioning](https://semver.org): `MAJOR.MINOR.PATCH`
 
-- **PATCH** — fixes to existing commands, wording corrections
+- **PATCH** — backwards-compatible fixes to shipped behavior
 - **MINOR** — new commands, new params fields, backwards-compatible changes
 - **MAJOR** — breaking changes to workflow structure or params schema
 
 The single source of truth is `SPECS/VERSION`. Each command file also carries a matching `**Version:**` header — update both when releasing. The install script copies `SPECS/VERSION` into the target repo so users can always check which version of Flow they have installed.
+
+Version bumps are not required for every PR. Treat the version as a release marker for shipped user-facing changes, not as a counter of merged branches.
+
+Do not bump for internal-only changes such as:
+
+- wording-only edits with no behavioral effect
+- CI or automation maintenance
+- tests only
+- refactors that preserve shipped behavior
+
+Bump when the release changes what users install or how Flow behaves:
+
+- command semantics or step ordering
+- params contract
+- installer/bootstrap behavior
+- release bundle contents
 
 
 ## Self-Hosted Development Policy
@@ -47,7 +63,7 @@ The installer supports this minimal bundle and generates starter user files when
 
 ### 1. Bump the version
 
-Update `SPECS/VERSION` and the `**Version:**` header in every `SPECS/COMMANDS/*.md` that changed.
+If the release contains user-facing shipped changes, update `SPECS/VERSION` and the `**Version:**` header in every changed shipped command file. If the release is internal-only, no version bump is required.
 
 ### 2. Commit
 
@@ -93,6 +109,7 @@ unzip flow.zip
 
 - [ ] `SPECS/VERSION` updated
 - [ ] Command file headers updated
+- [ ] Version bump included only if the release changes shipped user-facing behavior
 - [ ] Commit and tag pushed
 - [ ] GitHub Release created
 - [ ] Release includes both `flow-v{VERSION}-minimal.zip` and `SHA256SUMS`

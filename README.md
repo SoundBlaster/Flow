@@ -1,6 +1,6 @@
 # Flow — Agentic Workflow Framework
 
-**Version:** 1.3.0
+**Version:** 1.4.0
 
 > **Flow** is a documentation-driven agentic workflow framework for software development.
 
@@ -58,7 +58,7 @@ Typical wrapper target in consumer repos:
 
 ```make
 flow-install:
-  @FLOW_VERSION?=v1.2.0 bash tools/flow-bootstrap.sh
+  @FLOW_VERSION?=v1.4.0 bash tools/flow-bootstrap.sh
 ```
 
 ### 2. Configure for Your Project
