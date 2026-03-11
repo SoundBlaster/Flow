@@ -11,7 +11,7 @@ PLAN turns the selected task into a self-contained, implementation-ready PRD ins
 - `SPECS/INPROGRESS/next.md` — current task metadata chosen by SELECT.
 - `SPECS/Workplan.md` for workplan context (phase, references, dependencies).
 - [Params](.flow/params.yaml) — project-specific conventions and constraints.
-- Optional role prompts: [Plan Role](../ROLES/Plan.md) and [Architect Role](../ROLES/Architect.md) for stricter planning and PRD shaping.
+- REQUIRED Role Prompt: [Plan Role](../ROLES/Plan.md) and [Architect Role](../ROLES/Architect.md) for stricter planning and PRD shaping.
 
 ## Process
 
