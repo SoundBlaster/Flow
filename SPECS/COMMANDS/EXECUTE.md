@@ -11,7 +11,7 @@ EXECUTE is a lightweight workflow wrapper for implementing tasks. It ensures the
 - `SPECS/INPROGRESS/{TASK_ID}_{TASK_NAME}.md` produced by PLAN.
 - `SPECS/INPROGRESS/next.md` to know the chosen task.
 - [Params](.flow/params.yaml) — project configuration (`verify.*` and `structure.*` sections).
-- Optional role prompt: [TDD Executor Role](../ROLES/TDD_Executor.md) when implementation should follow an explicit outside-in TDD loop.
+- REQUIRED Role Prompt: [TDD Executor Role](../ROLES/TDD_Executor.md) when implementation should follow an explicit outside-in TDD loop.
 
 ## Steps
 
