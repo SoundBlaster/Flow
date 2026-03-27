@@ -51,6 +51,9 @@ Define three categories under `SPECS/`:
 1. **Ship** (static product artifacts):
    - `SPECS/COMMANDS/**`
    - `SPECS/VERSION`
+   - `.agents/skills/flow-*`
+   - `.agents/plugins/marketplace.json`
+   - `plugins/flow/**`
    - Optional stable docs that are part of product behavior (if needed later)
 2. **Scaffold** (optional installer templates, not mandatory in release zip):
    - `templates/**`

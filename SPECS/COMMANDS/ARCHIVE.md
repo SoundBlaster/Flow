@@ -1,6 +1,6 @@
 # ARCHIVE — Archive Completed Tasks
 
-**Version:** 1.4.0
+**Version:** 1.5.0
 
 ## Purpose
 

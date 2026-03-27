@@ -16,6 +16,8 @@ SPECS/
     └── PRIMITIVES/      # Reusable sub-steps
 
 templates/               # Install-time scaffolding (not workflow commands)
+.agents/skills/          # Shipped Codex skills
+plugins/flow/            # Shipped Flow plugin package
 install.sh               # Installer
 Makefile                 # Integrity checks
 ```

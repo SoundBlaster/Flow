@@ -1,6 +1,6 @@
 # REVIEW — Structured Code Review
 
-**Version:** 1.4.0
+**Version:** 1.5.0
 
 ## Purpose
 

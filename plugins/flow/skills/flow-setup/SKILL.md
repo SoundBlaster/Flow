@@ -48,7 +48,7 @@ bash docs/flow-bootstrap.sh /path/to/target-repo
 ```
 - Pinned + verified bootstrap with explicit version:
 ```bash
-FLOW_VERSION=v1.4.0 bash docs/flow-bootstrap.sh /path/to/target-repo
+FLOW_VERSION=v1.5.0 bash docs/flow-bootstrap.sh /path/to/target-repo
 ```
 
 3. Verify install artifacts

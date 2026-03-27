@@ -2,3 +2,8 @@ install.sh
 SPECS/VERSION
 SPECS/COMMANDS
 SPECS/ROLES
+.agents/plugins/marketplace.json
+.agents/skills/flow-run
+.agents/skills/flow-setup
+.agents/skills/flow-update
+plugins/flow

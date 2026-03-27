@@ -4,7 +4,7 @@ Use Flow as a pinned tooling dependency, not a runtime library.
 
 ## Required Inputs
 
-- `FLOW_VERSION` (tag, for example `v1.4.0`)
+- `FLOW_VERSION` (tag, for example `v1.5.0`)
 - Optional `FLOW_REPO` (defaults to `SoundBlaster/Flow`)
 
 ## Required Behavior
@@ -27,14 +27,14 @@ Example wrapper (`tools/flow-bootstrap.sh`):
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-FLOW_VERSION="${FLOW_VERSION:-v1.4.0}" bash docs/flow-bootstrap.sh .
+FLOW_VERSION="${FLOW_VERSION:-v1.5.0}" bash docs/flow-bootstrap.sh .
 ```
 
 Example Make target:
 
 ```make
 flow-install:
-	@FLOW_VERSION?=v1.4.0 bash tools/flow-bootstrap.sh
+	@FLOW_VERSION?=v1.5.0 bash tools/flow-bootstrap.sh
 ```
 
 ## Bot-Driven Version Updates
