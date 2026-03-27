@@ -16,19 +16,18 @@ Collect these before starting:
 
 If the task identifier is unknown, determine it from `SPECS/Workplan.md` and `SPECS/INPROGRESS/next.md` during SELECT.
 
-Read `@SPECS/TEMPLATES/QualityGates.md` to get project-specific quality gate commands. If templates don't exist, guide the user to run SETUP first.
+Read `.flow/params.yaml` (`verify.*`) to get project-specific quality gate commands. If params are missing or incomplete, guide the user to run SETUP first.
 
 ## Execution Contract
 
 Apply these rules throughout execution:
 - Read `SPECS/COMMANDS/FLOW.md` at the beginning and treat it as the source of truth.
-- Complete steps in order: `BRANCH -> SELECT -> PLAN -> EXECUTE -> ARCHIVE -> REVIEW -> FOLLOW-UP -> ARCHIVE-REVIEW -> PR -> CI-REVIEW`.
+- Complete steps in order: `BRANCH -> SELECT -> PLAN -> EXECUTE -> ARCHIVE -> REVIEW -> FOLLOW-UP -> ARCHIVE-REVIEW`.
 - Use the `flow-primitive-commit` skill (or standard git commits) for every commit checkpoint — stage only task-relevant files and use present-tense FLOW message patterns.
 - Run required quality gates during EXECUTE (tests, linting, type checking if configured, coverage check).
-- Read quality gate commands from `@SPECS/TEMPLATES/QualityGates.md`; if not configured, use common defaults for the detected language.
+- Read quality gate commands from `.flow/params.yaml` (`verify.*`); if not configured, use common defaults for the detected language.
 - Record artifacts in expected locations under `SPECS/INPROGRESS/` and `SPECS/ARCHIVE/`.
 - If REVIEW has no actionable issues, skip FOLLOW-UP and proceed directly to ARCHIVE-REVIEW, as FLOW permits.
-- After ARCHIVE-REVIEW, create a pull request from the feature branch into `main` (use `gh-create-pr` skill or manual PR creation).
 
 ## Step Procedure
 
@@ -49,7 +48,7 @@ Apply these rules throughout execution:
 
 4. EXECUTE
 - Implement to the PRD.
-- Run quality gates defined in FLOW and `SPECS/CONFIG.md`.
+- Run quality gates defined in FLOW and `.flow/params.yaml` (`verify.*`).
 - Create `SPECS/INPROGRESS/{TASK_ID}_Validation_Report.md`.
 - Commit message pattern: `Implement {TASK_ID}: {brief description of changes}`.
 - For large tasks, commit incrementally after each logical unit of work.
@@ -76,16 +75,12 @@ Apply these rules throughout execution:
 - Update `SPECS/ARCHIVE/INDEX.md`.
 - Commit message pattern: `Archive REVIEW_{subject} report`.
 
-9. PR
-- Open a pull request from the feature branch into `main`.
-- Title: `{TASK_ID}: {TASK_NAME}`.
-- Body: summarise changes, list quality gate results, reference the validation report.
+## Optional Post-FLOW Actions
 
-10. CI-REVIEW
-- Wait for CI to run after PR creation.
-- Inspect CI outcomes on the PR.
-- If all checks pass: report success and consider the run complete.
-- If checks fail: surface the actionable failure details, fix the issues, push a new commit, then repeat CI-REVIEW.
+If the user explicitly asks for PR and CI handling, do it after ARCHIVE-REVIEW:
+- Open a pull request from the feature branch into `main`.
+- Include quality gate results and reference the validation report.
+- Review CI outcomes and iterate on fixes if checks fail.
 
 ## Completion Criteria
 
@@ -94,8 +89,6 @@ Consider the run complete only when all are true:
 - Required artifacts exist in `SPECS/INPROGRESS/` and/or `SPECS/ARCHIVE/`.
 - Required quality gates were run and outcomes captured.
 - Every commit checkpoint was created with FLOW message patterns.
-- A pull request from the feature branch into `main` was opened.
-- CI checks on the PR were reviewed and all failures resolved.
 
 ## Trigger Phrases
 
