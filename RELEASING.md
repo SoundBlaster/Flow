@@ -31,7 +31,7 @@ Bump when the release changes what users install or how Flow behaves:
 
 When Flow is used to develop Flow itself, keep active workflow files in-repo (single-branch model), but treat release packaging as a strict allowlist.
 
-- Shipped in release zip (via `release-manifest.txt`): `install.sh`, `SPECS/VERSION`, `SPECS/COMMANDS/**`, `SPECS/ROLES/**`
+- Shipped in release zip (via `release-manifest.txt`): `install.sh`, `SPECS/VERSION`, `SPECS/COMMANDS/**`, `SPECS/ROLES/**`, `.agents/skills/flow-*`, `.agents/plugins/marketplace.json`, `plugins/flow/**`
 - Never shipped in release zip: `SPECS/Workplan.md`, `SPECS/INPROGRESS/**`, `SPECS/ARCHIVE/**`
 
 Rationale and trade-offs are documented in `docs/Self_Hosted_Development_and_Release_Strategy.md`.
@@ -53,6 +53,11 @@ install.sh
 SPECS/VERSION
 SPECS/COMMANDS/
 SPECS/ROLES/
+.agents/plugins/marketplace.json
+.agents/skills/flow-run/
+.agents/skills/flow-setup/
+.agents/skills/flow-update/
+plugins/flow/
 ```
 
 The installer supports this minimal bundle and generates starter user files when template files are not present.
@@ -68,7 +73,7 @@ If the release contains user-facing shipped changes, update `SPECS/VERSION` and 
 ### 2. Commit
 
 ```bash
-git add SPECS/VERSION SPECS/COMMANDS/ SPECS/ROLES/
+git add SPECS/VERSION SPECS/COMMANDS/ SPECS/ROLES/ .agents/ plugins/
 git commit -m "Release v{VERSION}"
 ```
 

@@ -62,7 +62,12 @@ install-test:
 		"$$tmp/SPECS/ROLES/Mentor.md" \
 		"$$tmp/SPECS/Workplan.md" \
 		"$$tmp/SPECS/ARCHIVE/INDEX.md" \
-		"$$tmp/SPECS/INPROGRESS/next.md"; do \
+		"$$tmp/SPECS/INPROGRESS/next.md" \
+		"$$tmp/.agents/plugins/marketplace.json" \
+		"$$tmp/.agents/skills/flow-run/SKILL.md" \
+		"$$tmp/.agents/skills/flow-setup/SKILL.md" \
+		"$$tmp/.agents/skills/flow-update/SKILL.md" \
+		"$$tmp/plugins/flow/.codex-plugin/plugin.json"; do \
 		if [ ! -f "$$f" ]; then \
 			echo "  FAIL missing: $$f"; failed=1; \
 		fi; \
@@ -89,7 +94,12 @@ minimal-bundle-test:
 		"$$target_root/SPECS/ROLES/Mentor.md" \
 		"$$target_root/SPECS/Workplan.md" \
 		"$$target_root/SPECS/ARCHIVE/INDEX.md" \
-		"$$target_root/SPECS/INPROGRESS/next.md"; do \
+		"$$target_root/SPECS/INPROGRESS/next.md" \
+		"$$target_root/.agents/plugins/marketplace.json" \
+		"$$target_root/.agents/skills/flow-run/SKILL.md" \
+		"$$target_root/.agents/skills/flow-setup/SKILL.md" \
+		"$$target_root/.agents/skills/flow-update/SKILL.md" \
+		"$$target_root/plugins/flow/.codex-plugin/plugin.json"; do \
 		if [ ! -f "$$f" ]; then \
 			echo "  FAIL missing: $$f"; failed=1; \
 		fi; \
@@ -131,7 +141,12 @@ bootstrap-verify-test:
 		"$$target_root/SPECS/ROLES/Mentor.md" \
 		"$$target_root/SPECS/Workplan.md" \
 		"$$target_root/SPECS/ARCHIVE/INDEX.md" \
-		"$$target_root/SPECS/INPROGRESS/next.md"; do \
+		"$$target_root/SPECS/INPROGRESS/next.md" \
+		"$$target_root/.agents/plugins/marketplace.json" \
+		"$$target_root/.agents/skills/flow-run/SKILL.md" \
+		"$$target_root/.agents/skills/flow-setup/SKILL.md" \
+		"$$target_root/.agents/skills/flow-update/SKILL.md" \
+		"$$target_root/plugins/flow/.codex-plugin/plugin.json"; do \
 		if [ ! -f "$$f" ]; then \
 			echo "  FAIL missing: $$f"; failed=1; \
 		fi; \

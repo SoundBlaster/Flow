@@ -90,6 +90,22 @@ copy_specs_dir_required() {
   echo "✓ SPECS/$dir_name/ updated"
 }
 
+copy_managed_path_required() {
+  local rel_path="$1"
+  local src_path="$SCRIPT_DIR/$rel_path"
+  local dst_path="$TARGET/$rel_path"
+
+  if [ ! -e "$src_path" ]; then
+    echo "ERROR: required Flow path is missing: $rel_path" >&2
+    exit 1
+  fi
+
+  mkdir -p "$(dirname "$dst_path")"
+  rm -rf "$dst_path"
+  cp -R "$src_path" "$dst_path"
+  echo "✓ $rel_path updated"
+}
+
 echo "Installing Flow into: $TARGET"
 echo ""
 
@@ -103,6 +119,24 @@ else
   printf "%s\n" "$FLOW_VERSION" > "$TARGET/SPECS/VERSION"
 fi
 echo "✓ SPECS/VERSION updated ($FLOW_VERSION)"
+
+# --- Flow-managed Codex assets (always updated) ---
+copy_managed_path_required ".agents/skills/flow-run"
+copy_managed_path_required ".agents/skills/flow-setup"
+copy_managed_path_required ".agents/skills/flow-update"
+copy_managed_path_required "plugins/flow"
+
+if [ ! -f "$SCRIPT_DIR/.agents/plugins/marketplace.json" ]; then
+  echo "ERROR: required Flow file is missing: .agents/plugins/marketplace.json" >&2
+  exit 1
+fi
+if [ ! -f "$TARGET/.agents/plugins/marketplace.json" ]; then
+  mkdir -p "$TARGET/.agents/plugins"
+  cp "$SCRIPT_DIR/.agents/plugins/marketplace.json" "$TARGET/.agents/plugins/marketplace.json"
+  echo "✓ .agents/plugins/marketplace.json created"
+else
+  echo "  .agents/plugins/marketplace.json already exists — skipped"
+fi
 
 # --- User files (only created if missing) ---
 

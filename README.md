@@ -1,6 +1,6 @@
 # Flow — Agentic Workflow Framework
 
-**Version:** 1.4.0
+**Version:** 1.5.0
 
 > **Flow** is a documentation-driven agentic workflow framework for software development.
 
@@ -34,7 +34,7 @@ BRANCH → SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → FOLLOW-UP → 
 /path/to/flow/install.sh
 ```
 
-The installer copies the `SPECS/COMMANDS/` and `SPECS/ROLES/` folders managed by Flow, then creates `SPECS/Workplan.md`, `SPECS/ARCHIVE/INDEX.md`, and `SPECS/INPROGRESS/next.md` from templates — skipping any user-owned files that already exist.
+The installer updates Flow-managed `SPECS/COMMANDS/` and `SPECS/ROLES/`, installs shipped Codex assets (`.agents/skills/flow-*`, `plugins/flow`), and creates `SPECS/Workplan.md`, `SPECS/ARCHIVE/INDEX.md`, and `SPECS/INPROGRESS/next.md` from templates when missing.
 
 ### Production Default: Pinned + Verified Bootstrap
 
@@ -58,7 +58,7 @@ Typical wrapper target in consumer repos:
 
 ```make
 flow-install:
-  @FLOW_VERSION?=v1.4.0 bash tools/flow-bootstrap.sh
+  @FLOW_VERSION?=v1.5.0 bash tools/flow-bootstrap.sh
 ```
 
 ### 2. Configure for Your Project
@@ -157,7 +157,8 @@ Commands reference it as `[Params](.flow/params.yaml)`. See `SPECS/COMMANDS/SETU
 # Run the installer again — Flow-managed SPECS folders are refreshed
 ./install.sh /path/to/your/repo
 
-# SPECS/COMMANDS/ and SPECS/ROLES/ are updated; your workplan, archive, and .flow/params.yaml are never touched
+# SPECS/COMMANDS/, SPECS/ROLES/, .agents/skills/flow-*, and plugins/flow are updated.
+# User-owned planning files remain untouched.
 ```
 
 ## Security Notes

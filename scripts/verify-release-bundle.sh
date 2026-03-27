@@ -41,6 +41,23 @@ if ! printf '%s\n' "$zip_listing" | grep -qE "^${bundle_root}/SPECS/ROLES/"; the
   exit 1
 fi
 
+if ! printf '%s\n' "$zip_listing" | grep -qE "^${bundle_root}/\.agents/plugins/marketplace\.json$"; then
+  echo "ERROR: .agents/plugins/marketplace.json is missing from release bundle" >&2
+  exit 1
+fi
+
+for required_skill in flow-run flow-setup flow-update; do
+  if ! printf '%s\n' "$zip_listing" | grep -qE "^${bundle_root}/\.agents/skills/${required_skill}/SKILL\.md$"; then
+    echo "ERROR: .agents/skills/${required_skill}/SKILL.md is missing from release bundle" >&2
+    exit 1
+  fi
+done
+
+if ! printf '%s\n' "$zip_listing" | grep -qE "^${bundle_root}/plugins/flow/\.codex-plugin/plugin\.json$"; then
+  echo "ERROR: plugins/flow/.codex-plugin/plugin.json is missing from release bundle" >&2
+  exit 1
+fi
+
 for forbidden in \
   "${bundle_root}/SPECS/Workplan.md" \
   "${bundle_root}/SPECS/INPROGRESS/" \
