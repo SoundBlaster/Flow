@@ -1,0 +1,38 @@
+{
+  "name": "flow",
+  "version": "1.4.0",
+  "description": "Flow agentic workflow plugin with the flow-run skill for end-to-end task execution.",
+  "author": {
+    "name": "Egor Merkushev",
+    "url": "https://github.com/SoundBlaster"
+  },
+  "homepage": "https://github.com/SoundBlaster/Flow",
+  "repository": "https://github.com/SoundBlaster/Flow",
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "agentic",
+    "planning",
+    "execution",
+    "review"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Flow",
+    "shortDescription": "Run the FLOW workflow end-to-end",
+    "longDescription": "Provides the flow-run skill to execute BRANCH -> SELECT -> PLAN -> EXECUTE -> ARCHIVE -> REVIEW -> FOLLOW-UP -> ARCHIVE-REVIEW with quality gates.",
+    "developerName": "Egor Merkushev",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/SoundBlaster/Flow",
+    "defaultPrompt": [
+      "Run the next task end-to-end using $flow-run.",
+      "Execute FLOW from BRANCH through ARCHIVE-REVIEW.",
+      "Follow @SPECS/COMMANDS/FLOW.md step-by-step."
+    ],
+    "brandColor": "#1F6FEB"
+  }
+}
